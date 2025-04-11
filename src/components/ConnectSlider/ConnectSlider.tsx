@@ -1,11 +1,11 @@
 "use client"
 
-import React, { useEffect } from "react"
+import React from "react"
 import { useKeenSlider } from "keen-slider/react"
 import "keen-slider/keen-slider.min.css"
 import Image from "next/image"
 import { Card } from "@/components/ui/card"
-import { HiSparkles ,HiOutlineSparkles   } from "react-icons/hi";
+import {HiOutlineSparkles   } from "react-icons/hi";
 
 const tools1 = [
     { name: "Crisp", src: "/home/connectlogo/crisp.svg" },

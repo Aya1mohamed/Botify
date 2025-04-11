@@ -1,12 +1,9 @@
-// components/BotEngineSection.tsx
 
 import React from 'react';
 import { Card, CardContent } from "@/components/ui/card";
 import Image from 'next/image';
 import {
-    Folder, Split, SquareActivity, ShieldAlert, CircleAlert,
-    Link2, FileText, MessageSquareText, Webhook, Parentheses
-    , Search, MoveRight
+    Folder, Split,Link2, FileText, MessageSquareText, Webhook, Parentheses, Search, MoveRight
 } from 'lucide-react';
 import { RiNotionFill, RiFileExcel2Fill } from "react-icons/ri";
 import { FaConfluence, FaGoogleDrive } from "react-icons/fa";
