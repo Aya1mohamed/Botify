@@ -1,9 +1,11 @@
 import Image from "next/image";
+import HomePage from "./HomePage/HomePage";
 
 export default function Home() {
   return (
-    <div className="flex items-center justify-center">
-      <h5 className="font-bold bg-red-500">hello</h5>
+    <div className="">
+      <HomePage/>
+
     
   
     </div>
