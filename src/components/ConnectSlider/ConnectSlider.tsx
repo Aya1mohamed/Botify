@@ -87,7 +87,7 @@ export default function ConnectSlider() {
                 {tools1.map((tool, idx) => (
                     <Card
                         key={idx}
-                        className="keen-slider__slide flex items-center justify-center gap-2 px-4 py-2 border rounded-xl bg-white dark:bg-gray-800 shadow-xl transition-transform duration-500 ease-in-out"
+                        className="keen-slider__slide flex items-center justify-center gap-2 px-4 py-2 border rounded-xl bg-gray-50 dark:bg-gray-800 shadow-xl transition-transform duration-500 ease-in-out"
                     >
                         <Image src={tool.src} alt={tool.name} width={30} height={30} />
                         <span className="text-sm font-medium text-gray-700 dark:text-white">{tool.name}</span>
@@ -101,7 +101,7 @@ export default function ConnectSlider() {
                 {tools2.map((tool, idx) => (
                     <Card
                         key={`bottom-${idx}`}
-                        className="keen-slider__slide flex items-center justify-center gap-2 px-4 py-2 border rounded-xl bg-white dark:bg-gray-800 shadow-sm transition-transform duration-500 ease-in-out"
+                        className="keen-slider__slide flex items-center justify-center gap-2 px-4 py-2 border rounded-xl bg-gray-50 dark:bg-gray-800 shadow-sm transition-transform duration-500 ease-in-out"
                     >
                         <Image src={tool.src} alt={tool.name} width={30} height={30} />
                         <span className="text-sm font-medium text-gray-700 dark:text-white">{tool.name}</span>

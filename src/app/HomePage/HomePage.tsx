@@ -27,7 +27,7 @@ export default function HomePage() {
               with Intelligent AI Agents
             </p>
             <Button asChild className='bg-brand-primary hover:bg-brand-secondary text-lg p-6'>
-              <Link href="/login">Get Started</Link>
+              <Link href="/auth/Login">Get Started</Link>
             </Button>
           </div>
 

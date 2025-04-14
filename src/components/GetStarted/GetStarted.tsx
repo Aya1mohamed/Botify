@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button'
 import Link from 'next/link'
 export default function GetStarted() {
   return (
-    <div className="bg-white dark:bg-zinc-900 rounded-3xl shadow-md p-6 md:p-10 flex flex-col md:flex-row items-center gap-6 md:gap-10 max-w-5xl mx-auto my-16 transition-colors duration-300">
+    <div className="bg-gray-50 dark:bg-zinc-900 rounded-3xl shadow-md p-6 md:p-10 flex flex-col md:flex-row items-center gap-6 md:gap-10 max-w-5xl mx-auto my-16 transition-colors duration-300">
       {/* Left Image */}
       <div className="w-full md:w-1/2">
         <Image

@@ -43,7 +43,7 @@ export default function LogoSlider() {
         {logos.map((logo, index) => (
           <div
             key={index}
-            className="keen-slider__slide flex items-center justify-center bg-white p-4 rounded-xl shadow-md"
+            className="keen-slider__slide flex items-center justify-center bg-gray-50 dark:bg-gray-800 p-4 rounded-xl shadow-md"
           >
             <img src={logo} alt={`logo-${index}`} className="lg:h-14 object-contain" />
           </div>

@@ -10,7 +10,7 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { Github } from "lucide-react"
 import { FcGoogle } from "react-icons/fc"
 import { toast } from 'sonner'
-import jwt from 'jsonwebtoken'
+import bcrypt from 'bcryptjs'
 
 export default function Page() {
   const router = useRouter()
@@ -29,9 +29,10 @@ export default function Page() {
 
     const user = JSON.parse(storedUser)
 
-    if (user.email === email && user.password === password) {
-      // ✅ Generate temporary token
-      const tempSecret = crypto.randomUUID()
+    const isEmailMatch = user.email === email
+    const isPasswordMatch = bcrypt.compareSync(password, user.password)
+
+    if (isEmailMatch && isPasswordMatch) {
       const token = btoa(
         JSON.stringify({
           email: user.email,
@@ -40,17 +41,14 @@ export default function Page() {
           createdAt: new Date().toISOString()
         })
       )
-      
-      localStorage.setItem("botify_token", token)
-      
 
+      localStorage.setItem("botify_token", token)
       toast.success("🎉 Welcome back!")
-      router.push("/")
+      router.push("/Dashboard")
     } else {
       toast.error("Invalid email or password")
     }
   }
-
   return (
     <div className="flex flex-col md:flex-row min-h-screen">
       <div className="w-full md:w-1/2 flex items-center justify-center min-h-screen bg-gray-50">

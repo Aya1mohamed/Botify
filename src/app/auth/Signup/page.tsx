@@ -16,8 +16,8 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useRouter } from "next/navigation"
 import { toast } from "sonner";
 import { Eye, EyeOff } from "lucide-react"
+import bcrypt from 'bcryptjs'
 
-// ✅ updated schema
 const SignUpSchema = z.object({
   firstName: z.string().min(2, "First name is required"),
   lastName: z.string().min(2, "Last name is required"),
@@ -56,23 +56,31 @@ export default function Page() {
     return password
   }
 
-  const onSubmit = (data: SignUpData) => {
+  const onSubmit = async (data: SignUpData) => {
     if (!acceptedTerms) {
       toast.error("🚫 You must accept the terms.")
       return
     }
-
+  
     if (!phone) {
       toast.error("📱 Phone number is required.")
       return
     }
-
-    const userData = { ...data, phone }
+  
+    const hashedPassword = await bcrypt.hash(data.password, 10)
+  
+    const userData = { 
+      ...data, 
+      phone, 
+      password: hashedPassword 
+    }
+  
     localStorage.setItem("botify_user", JSON.stringify(userData))
-
+  
     toast.success("🎉 Account created successfully!")
     router.push("/auth/Login")
   }
+  
 
   return (
     <div className="flex flex-col md:flex-row min-h-screen">
