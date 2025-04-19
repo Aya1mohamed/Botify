@@ -18,7 +18,7 @@ import {
     DropdownMenuItem,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { User, LogOut, Settings , ChevronDown} from "lucide-react"
+import { User, LogOut, ChevronDown} from "lucide-react"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 export default function page() {
@@ -48,10 +48,6 @@ export default function page() {
                             </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent className="w-40 mt-2">
-                            <DropdownMenuItem>
-                                <Settings className="w-4 h-4 mr-2" />
-                                Settings
-                            </DropdownMenuItem>
                             <DropdownMenuItem>
                                 <User className="w-4 h-4 mr-2" />
                                 Profile
