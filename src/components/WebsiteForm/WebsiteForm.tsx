@@ -1,12 +1,16 @@
 import { useState } from 'react';
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
 
 export default function WebsiteForm() {
   const [url, setUrl] = useState("");
+  const router = useRouter();
+
   
   const handleExtract = () => {
     console.log("Extracting links from:", url);
+    router.push("/Botify");
   };
 
   return (
