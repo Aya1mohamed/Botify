@@ -1,5 +1,5 @@
 "use client"
-import React, { useState } from 'react'
+import React from 'react'
 import { useRouter } from "next/navigation"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
@@ -10,44 +10,47 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { Github } from "lucide-react"
 import { FcGoogle } from "react-icons/fc"
 import { toast } from 'sonner'
-import bcrypt from 'bcryptjs'
+import { useSanitizedForm } from '@/hooks/useSanitizedForm'
+import { yupResolver } from '@hookform/resolvers/yup';
+import { LoginSchema } from '@/services/validationSchemas/loginSchema'
+import { useLogin } from '@/hooks/useLogin'
+
+
+interface LoginFormInputs {
+  username: string;
+  password: string;
+}
 
 export default function Page() {
   const router = useRouter()
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
-  const [error, setError] = useState("")
+  const { login, loading, error } = useLogin()
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useSanitizedForm<LoginFormInputs>({
+    defaultValues: {
+      username: "",
+      password: "",
+    },
+    resolver: yupResolver(LoginSchema()),
+  })
 
-  const handleLogin = (e: React.FormEvent) => {
-    e.preventDefault()
+  const handleLogin = async (data: LoginFormInputs) => {
 
-    const storedUser = localStorage.getItem("botify_user")
-    if (!storedUser) {
-      toast.error("No account found. Please sign up first.")
-      return
-    }
+      const isLoggedIn = await login({
+        username: data.username,
+        password: data.password,
+      })
+      console.log(isLoggedIn)
+      if (isLoggedIn) {
+        toast.success('Login successful')
+        router.push('/Dashboard')
+      }
+      else {
+        toast.error('Invalid credentials')
+      }
 
-    const user = JSON.parse(storedUser)
-
-    const isEmailMatch = user.email === email
-    const isPasswordMatch = bcrypt.compareSync(password, user.password)
-
-    if (isEmailMatch && isPasswordMatch) {
-      const token = btoa(
-        JSON.stringify({
-          email: user.email,
-          name: `${user.firstName} ${user.lastName}`,
-          phone: user.phone,
-          createdAt: new Date().toISOString()
-        })
-      )
-
-      localStorage.setItem("botify_token", token)
-      toast.success("🎉 Welcome back!")
-      router.push("/Dashboard")
-    } else {
-      toast.error("Invalid email or password")
-    }
   }
   return (
     <div className="flex flex-col md:flex-row min-h-screen">
@@ -62,30 +65,25 @@ export default function Page() {
           </CardHeader>
 
           <CardContent>
-            <form className="space-y-4" onSubmit={handleLogin}>
+            <form className="space-y-4" onSubmit={handleSubmit(handleLogin)}>
               <div>
-                <Label htmlFor="email">Email</Label>
+                <Label htmlFor="email">Username</Label>
                 <Input
-                  id="email"
-                  type="email"
+                  type="text"
                   placeholder="Enter your email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  {...register("username")}
                 />
               </div>
-
+              {errors.username && <p className="text-xs text-red-500">{errors.username.message}</p>}
               <div>
                 <Label htmlFor="password">Password</Label>
                 <Input
-                  id="password"
                   type="password"
                   placeholder="Enter your password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  {...register("password")}
                 />
               </div>
-
-              {error && <p className="text-xs text-red-500">{error}</p>}
+              {errors.password && <p className="text-xs text-red-500">{errors.password.message}</p>}
 
               <div className="flex justify-between items-center text-sm">
                 <div className='flex items-center space-x-2'>
@@ -97,9 +95,11 @@ export default function Page() {
                 </Link>
               </div>
 
-              <Button type="submit" className="w-full bg-brand-secondary hover:bg-brand-primary">
+              {loading ? <Button type="submit" disabled className="w-full bg-brand-secondary hover:bg-brand-primary">
                 Sign in
-              </Button>
+              </Button> : <Button type="submit" className="w-full bg-brand-secondary hover:bg-brand-primary">
+                Sign in
+              </Button>}
 
               <div className="flex items-center gap-2">
                 <hr className="flex-grow border-gray-300" />
@@ -128,6 +128,7 @@ export default function Page() {
                 <Link href="/terms" className="hover:underline">Terms and conditions</Link> •{" "}
                 <Link href="/privacy" className="hover:underline">Privacy policy</Link>
               </p>
+              {error && <p className="text-xs text-red-500">{error}</p>}
             </form>
           </CardContent>
         </Card>
