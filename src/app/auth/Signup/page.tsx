@@ -4,47 +4,41 @@ import { Button } from "@/components/ui/button"
 import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Checkbox } from "@/components/ui/checkbox"
-import PhoneInput from 'react-phone-input-2'
-import 'react-phone-input-2/lib/style.css'
 import { Github } from "lucide-react"
 import { FcGoogle } from "react-icons/fc";
 import Link from "next/link"
 import { useState } from "react"
-import { useForm } from "react-hook-form"
-import { z } from "zod"
-import { zodResolver } from "@hookform/resolvers/zod"
+import { yupResolver } from '@hookform/resolvers/yup'
 import { useRouter } from "next/navigation"
 import { toast } from "sonner";
-import { Eye, EyeOff } from "lucide-react"
-import bcrypt from 'bcryptjs'
-
-const SignUpSchema = z.object({
-  firstName: z.string().min(2, "First name is required"),
-  lastName: z.string().min(2, "Last name is required"),
-  email: z.string().email("Invalid email address"),
-  password: z.string()
-    .min(8, "Password must be at least 8 characters")
-    .regex(/[A-Z]/, "Must include at least one uppercase letter")
-    .regex(/[a-z]/, "Must include at least one lowercase letter")
-    .regex(/[0-9]/, "Must include at least one number")
-    .regex(/[^A-Za-z0-9]/, "Must include at least one special character"),
-})
-
-type SignUpData = z.infer<typeof SignUpSchema>
+import { useRegister } from "@/hooks/useRegister";
+import { RegisterBody } from "@/services/types/register";
+import { RegisterSchema } from '@/services/validationSchemas/registerSchema'
+import { Controller } from "react-hook-form";
+import PhoneInput from 'react-phone-input-2'
+import 'react-phone-input-2/lib/style.css'
+import { useSanitizedForm } from "@/hooks/useSanitizedForm"
 
 export default function Page() {
   const router = useRouter()
   const [acceptedTerms, setAcceptedTerms] = useState(false)
-  const [phone, setPhone] = useState("")
-  const [showPassword, setShowPassword] = useState(false)
+  const { registerUser, loading, error } = useRegister()
 
   const {
     register,
     handleSubmit,
-    formState,
+    control,
     formState: { errors },
-  } = useForm<SignUpData>({
-    resolver: zodResolver(SignUpSchema)
+  } = useSanitizedForm<{
+    first_name: string;
+    last_name: string;
+    username: string;
+    password: string;
+    password1: string;
+    email: string;
+    phone_number: string;
+  }>({
+    resolver: yupResolver(RegisterSchema()),
   })
 
   const generateStrongPassword = (length = 12) => {
@@ -56,31 +50,28 @@ export default function Page() {
     return password
   }
 
-  const onSubmit = async (data: SignUpData) => {
+  const onSubmit = async (data: RegisterBody) => {
+    console.log(data);
+    console.log("SUBMITTTTTTING");
     if (!acceptedTerms) {
-      toast.error("🚫 You must accept the terms.")
-      return
+      toast.error("🚫 You must accept the terms.");
+      return;
     }
-  
-    if (!phone) {
-      toast.error("📱 Phone number is required.")
-      return
+
+    try {
+      const result = await registerUser(data);
+
+      if (result) {
+        toast.success("🎉 Account created successfully!");
+        router.push("/auth/Login");
+      } else {
+        throw new Error("Registration failed.");
+      }
+    } catch {
+      const errorMessage = error || "Something went wrong. Please try again.";
+      toast.error(errorMessage);
     }
-  
-    const hashedPassword = await bcrypt.hash(data.password, 10)
-  
-    const userData = { 
-      ...data, 
-      phone, 
-      password: hashedPassword 
-    }
-  
-    localStorage.setItem("botify_user", JSON.stringify(userData))
-  
-    toast.success("🎉 Account created successfully!")
-    router.push("/auth/Login")
-  }
-  
+  };
 
   return (
     <div className="flex flex-col md:flex-row min-h-screen">
@@ -95,62 +86,86 @@ export default function Page() {
           </CardHeader>
           <CardContent>
             <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
-              <div className="grid grid-cols-2 gap-4">
+
+
+              <div className="flex gap-2">
                 <div>
-                  <Label htmlFor="firstName">First Name</Label>
-                  <Input id="firstName" placeholder="First Name" {...register("firstName")} />
-                  {errors.firstName && <p className="text-xs text-red-500 mt-1">{errors.firstName.message}</p>}
-                </div>
-                <div>
-                  <Label htmlFor="lastName">Last Name</Label>
-                  <Input id="lastName" placeholder="Last Name" {...register("lastName")} />
-                  {errors.lastName && <p className="text-xs text-red-500 mt-1">{errors.lastName.message}</p>}
-                </div>
+                  <Label htmlFor="first_name">First Name</Label>
+                  <Input id="first_name" placeholder="Enter your first name" {...register("first_name")} />
+                {errors.first_name && <p className="text-xs text-red-500 mt-1">{errors.first_name.message}</p>}
               </div>
 
               <div>
-                <PhoneInput
-                  country={'eg'}
-                  value={phone}
-                  onChange={setPhone}
-                  inputStyle={{
-                    width: '100%',
-                    height: '42px',
-                    borderRadius: '0.375rem',
-                    borderColor: '#d1d5db',
-                    fontSize: '0.875rem',
-                    paddingLeft: '48px'
-                  }}
-                  containerStyle={{ width: '100%' }}
-                  inputClass="text-sm"
+                <Label htmlFor="last_name">Last Name</Label>
+                <Input id="last_name" placeholder="Enter your last name" {...register("last_name")} />
+                {errors.last_name && <p className="text-xs text-red-500 mt-1">{errors.last_name.message}</p>}
+              </div>
+              </div>
+
+              {/* Username */}
+              <div>
+                <Label htmlFor="username">Username</Label>
+                <Input id="username" placeholder="Enter your username" {...register("username")} />
+                {errors.username && <p className="text-xs text-red-500 mt-1">{errors.username.message}</p>}
+              </div>
+
+              {/* phone number */}
+              <div>
+                <Label htmlFor="phone_number">Phone Number</Label>
+                <Controller
+                  name="phone_number"
+                  control={control}
+                  defaultValue=""
+                  render={({ field }) => (
+                    
+                    <PhoneInput
+                      country={'eg'}
+                      value={field.value}
+                      onChange={(value) => field.onChange(value)}
+                      onBlur={field.onBlur}
+                      inputProps={{
+                        name: field.name,
+                        required: true,
+                      }}
+                      countryCodeEditable={false}
+                      containerStyle={{ width: '100%' }}
+                      inputStyle={{ width: '100%', height: '42px' }}
+                    />
+                  )}
                 />
-                {!phone && formState.isSubmitted && (
-                  <p className="text-xs text-red-500 mt-1">Phone number is required</p>
+                {errors.phone_number && (
+                  <p className="text-xs text-red-500">{errors.phone_number.message}</p>
                 )}
               </div>
 
+              {/* Email */}
               <div>
+                <Label htmlFor="email">Email</Label>
                 <Input id="email" type="email" placeholder="Enter your email" {...register("email")} />
                 {errors.email && <p className="text-xs text-red-500 mt-1">{errors.email.message}</p>}
               </div>
 
+              {/* Password */}
               <div className="relative">
+                <Label htmlFor="password">Password</Label>
                 <Input
                   id="password"
-                  type={showPassword ? "text" : "password"}
+                  type="password"
                   placeholder="Enter your password"
                   {...register("password")}
                 />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-2.5 text-gray-500 hover:text-gray-700"
-                >
-                  {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
-                </button>
                 {errors.password && <p className="text-xs text-red-500 mt-1">{errors.password.message}</p>}
               </div>
-
+              <div className="relative">
+                <Input
+                  id="password1"
+                  type="password"
+                  placeholder="Confirm your password"
+                  {...register("password1")}
+                />
+                {errors.password1 && <p className="text-xs text-red-500 mt-1">{errors.password1.message}</p>}
+              </div>
+              {/* Generate Password Button */}
               <div className="flex items-center justify-between">
                 <Button
                   type="button"
@@ -162,6 +177,7 @@ export default function Page() {
                 </Button>
               </div>
 
+              {/* Terms */}
               <div className="flex items-center space-x-2">
                 <Checkbox
                   id="terms"
@@ -174,14 +190,19 @@ export default function Page() {
                 </label>
               </div>
 
+              {/* Global Error */}
+              {error && <p className="text-xs text-red-500">{error}</p>}
+
+              {/* Submit Button */}
               <Button
                 type="submit"
                 className="w-full bg-brand-secondary hover:bg-brand-primary"
-                disabled={!acceptedTerms}
+                disabled={loading || !acceptedTerms}
               >
-                Create Account
+                {loading ? "Creating Account..." : "Create Account"}
               </Button>
 
+              {/* Login Link */}
               <div className="text-center text-sm">
                 Already have an account?{" "}
                 <Link href="/auth/Login" className="text-brand-accent hover:underline">
@@ -189,12 +210,14 @@ export default function Page() {
                 </Link>
               </div>
 
+              {/* Divider */}
               <div className="flex items-center gap-2 my-4">
                 <hr className="flex-grow border-gray-300" />
                 <span className="text-gray-400 text-sm">or</span>
                 <hr className="flex-grow border-gray-300" />
               </div>
 
+              {/* Social Logins */}
               <Button variant="outline" className="w-full flex items-center justify-center gap-2">
                 <FcGoogle className="w-5 h-5" />
                 Continue with Google
@@ -205,6 +228,7 @@ export default function Page() {
                 Continue with GitHub
               </Button>
 
+              {/* Footer Links */}
               <p className="text-xs text-gray-400 text-center mt-4">
                 <Link href="/terms" className="hover:underline">Terms and conditions</Link> •{" "}
                 <Link href="/privacy" className="hover:underline">Privacy policy</Link>
@@ -214,7 +238,7 @@ export default function Page() {
         </Card>
       </div>
 
-      <div className="hidden md:flex w-1/2  relative">
+      <div className="hidden md:flex w-1/2 relative">
         <img
           src="/home/loginrobot.jpg"
           alt="AI illustration"

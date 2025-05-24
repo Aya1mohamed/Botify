@@ -24,6 +24,7 @@ class TokenManager {
     }
 
     public setTokensToCookies(accessToken: string, refreshToken?: string) {
+        console.log(accessToken, refreshToken);
         const cookieStore = cookies();
         cookieStore.set(ACCESS_TOKEN, accessToken, {
             httpOnly: true,

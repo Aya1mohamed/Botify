@@ -1,6 +1,6 @@
 "use client"
-import React from 'react'
-import { useRouter } from "next/navigation"
+import React, { useEffect } from 'react'
+import { useRouter, useSearchParams } from "next/navigation"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Label } from "@/components/ui/label"
@@ -14,7 +14,7 @@ import { useSanitizedForm } from '@/hooks/useSanitizedForm'
 import { yupResolver } from '@hookform/resolvers/yup';
 import { LoginSchema } from '@/services/validationSchemas/loginSchema'
 import { useLogin } from '@/hooks/useLogin'
-
+import { ACCESS_TOKEN } from '@/constants/tokens'
 
 interface LoginFormInputs {
   username: string;
@@ -23,6 +23,7 @@ interface LoginFormInputs {
 
 export default function Page() {
   const router = useRouter()
+  const searchParams = useSearchParams()
   const { login, loading, error } = useLogin()
   const {
     register,
@@ -36,22 +37,30 @@ export default function Page() {
     resolver: yupResolver(LoginSchema()),
   })
 
+  // Check if user is already authenticated
+  useEffect(() => {
+    // We can directly check localStorage since we're on the client
+    const token = localStorage.getItem(ACCESS_TOKEN)
+    if (token) {
+      const callbackUrl = searchParams.get('callbackUrl') || '/Dashboard'
+      toast.success('Already logged in')
+      router.push(decodeURIComponent(callbackUrl))
+    }
+  }, [router, searchParams])
+
   const handleLogin = async (data: LoginFormInputs) => {
-
-      const isLoggedIn = await login({
-        username: data.username,
-        password: data.password,
-      })
-      console.log(isLoggedIn)
-      if (isLoggedIn) {
-        toast.success('Login successful')
-        router.push('/Dashboard')
-      }
-      else {
-        toast.error('Invalid credentials')
-      }
-
+    const isLoggedIn = await login({
+      username: data.username,
+      password: data.password,
+    })
+    
+    if (isLoggedIn) {
+      toast.success('Login successful')
+    } else {
+      toast.error('Invalid credentials')
+    }
   }
+
   return (
     <div className="flex flex-col md:flex-row min-h-screen">
       <div className="w-full md:w-1/2 flex items-center justify-center min-h-screen bg-gray-50">
@@ -118,7 +127,7 @@ export default function Page() {
               </Button>
 
               <div className="text-center font-bold text-sm">
-                Don’t have an account?{" "}
+                Don&apos;t have an account?{" "}
                 <Link href="/auth/Signup" className="text-brand-accent hover:underline">
                   Create a new account
                 </Link>
@@ -138,7 +147,7 @@ export default function Page() {
         <img src="/home/loginrobot.jpg" alt="AI illustration" className="object-cover object-center w-full h-full" />
         <div className="absolute bottom-0 bg-gray-400 bg-opacity-60 text-white p-14 rounded-t-2xl w-full text-center">
           <p className="text-2xl font-semibold leading-snug">
-            “Revolutionize customer interactions with the power of AI technology”
+            &quot;Revolutionize customer interactions with the power of AI technology&quot;
           </p>
         </div>
       </div>

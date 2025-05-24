@@ -1,18 +1,28 @@
-import { getAccessToken } from '@/actions/tokenManager';
-import { UNAUTHORIZED } from '@/constants/statusCodes';
+import { getAccessToken, deleteTokens } from '@/actions/tokenManager';
+import { UNAUTHORIZED, BAD_REQUEST } from '@/constants/statusCodes';
+import { formatValidationErrors, ValidationErrorResponse } from './utils/formatValidationErrors';
 
 /**
- * Check if the code is being run on the browser then replaces the location to /.
- * @param error
+ * Check if the code is being run on the browser.
  */
-// export const isClientSide = (): boolean => typeof window !== 'undefined';
+export const isClientSide = (): boolean => typeof window !== 'undefined';
 
-// export const handleReLogin = async (error?: unknown) => {
-//     await deleteTokens();
-//     await deleteProfile();
-//     isClientSide() && window?.location?.replace('/login');
-//     throw error;
-// };
+/**
+ * Handle re-login by removing tokens and redirecting to login page.
+ * @param error The error that triggered re-login.
+ */
+export const handleReLogin = async (callbackUrl?: string, error?: unknown) => {
+    await deleteTokens();
+    
+    if (isClientSide()) {
+        const loginUrl = callbackUrl 
+            ? `/auth/Login?callbackUrl=${encodeURIComponent(callbackUrl)}`
+            : '/auth/Login';
+        window.location.href = loginUrl;
+    }
+    
+    if (error) throw error;
+};
 
 /**
  * Fetch data from an API endpoint with optional configuration.
@@ -42,7 +52,7 @@ export async function customFetch<T>({
     preventThrow = false,
 }: {
     endpoint: string;
-    body?: Record<string, unknown>;
+    body?: Record<string, unknown> | FormData;
     method?: 'GET' | 'POST' | 'PUT' | 'DELETE';
     options?: RequestInit & { next?: { revalidate?: number } };
     headers?: Record<string, string>;
@@ -58,13 +68,14 @@ export async function customFetch<T>({
         try {
             accessToken = await getAccessToken();
             if (!accessToken) {
+                handleReLogin(isClientSide() ? window.location.href : undefined);
                 throw new Error('No access token');
             } else {
                 accessToken = `Bearer ${accessToken}`;
             }
         } catch (error) {
             console.error('Error in customFetch:', error);
-            // return handleReLogin(error);
+            handleReLogin(isClientSide() ? window.location.href : undefined, error);
         }
     }
 
@@ -80,24 +91,41 @@ export async function customFetch<T>({
         ...options,
     };
 
-    if (body && method !== 'GET' && shouldStringify) {
-        fetchOptions.body = JSON.stringify(body);
-    } else if (body && method !== 'GET') {
-        fetchOptions.body = JSON.stringify(body);
+    if (body && method !== 'GET') {
+        if (body instanceof FormData) {
+            // For FormData, don't stringify and let the browser set the content-type
+            fetchOptions.body = body;
+        } else if (shouldStringify) {
+            fetchOptions.body = JSON.stringify(body);
+        } else {
+            fetchOptions.body = JSON.stringify(body);
+        }
     }
 
     try {
         const response = await fetch(fullUrl, fetchOptions);
-        console.log(response);
         if (!response.ok) {
             if (response.status === UNAUTHORIZED) {
-                // handleReLogin();
-                console.error('Unauthorized');
+                handleReLogin(isClientSide() ? window.location.href : undefined);
+                throw new Error('Unauthorized access');
             }
+            
             if (preventThrow) {
                 return await response.json();
             } else {
-                const errorMessage = (await response.json()) as {
+                const errorData = await response.json();
+                
+                // Handle 400 Bad Request with field validation errors
+                if (response.status === BAD_REQUEST) {
+                    // Check if the error response matches the validation error structure
+                    if (errorData && typeof errorData === 'object' && !errorData.message && !errorData.details) {
+                        const formattedError = formatValidationErrors(errorData as ValidationErrorResponse);
+                        throw new Error(formattedError);
+                    }
+                }
+                
+                // Handle other error formats (existing logic)
+                const errorMessage = errorData as {
                     message: string;
                     details: string;
                 };
@@ -107,6 +135,7 @@ export async function customFetch<T>({
                 );
             }
         }
+        
         return response.headers.get('content-type')?.includes('text/plain')
             ? (response.text() as Promise<T>)
             : (response.json() as Promise<T>);

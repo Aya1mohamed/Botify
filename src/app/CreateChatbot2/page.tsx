@@ -17,9 +17,9 @@ import { Button } from "@/components/ui/button"
 import { useRouter } from "next/navigation"
 import { ArrowLeft, PanelBottom, LayoutPanelTop, RotateCcw, Paperclip, MinusCircle } from "lucide-react"
 import Navbar2 from "@/components/Navbar2/Navbar2"
-import { useState , useEffect } from "react"
+import { useState, useEffect } from "react"
 import { Card, CardContent } from "@/components/ui/card"
-import Link from "next/link"
+import { toast } from "sonner";
 import Image from "next/image"
 import { Switch } from "@/components/ui/switch"
 import { Input } from "@/components/ui/input"
@@ -27,27 +27,27 @@ import { Textarea } from "@/components/ui/textarea";
 import ChatbotPreview from "@/components/ChatbotPreview/ChatbotPreview"
 export default function CreateChatbot2() {
     const router = useRouter()
-    const [selectedLayout, setSelectedLayout] = useState<"chat" | "tab">("chat");
+    const [selectedLayout, setSelectedLayout] = useState<"chat">("chat");
     const [logo, setLogo] = useState<string | null>(null);
     const [streaming, setStreaming] = useState(false)
     const [primaryColor, setPrimaryColor] = useState("#634464")
-    const [textColor, setTextColor] = useState("")
+    const [textColor, setTextColor] = useState("#ffffff")
     const [welcomeMessage, setWelcomeMessage] = useState("👋 Hi There!\nHow can I assist you today");
     const [chatPlaceholder, setChatPlaceholder] = useState("Ask your query...");
     const [canSendAttachment, setCanSendAttachment] = useState(false);
     const [botName, setBotName] = useState("");
     const [chatBgColor, setChatBgColor] = useState("#ffffff")
     const [messages, setMessages] = useState<string[]>(["👋 Hi There!\nHow can I assist you today"]);
-    const [language, setLanguage] = useState("en")
 
-    useEffect(() => {
-        // Set default text color based on selected layout
-        if (selectedLayout === "chat") {
-            setTextColor("#ffffff");
-        } else if (selectedLayout === "tab") {
-            setTextColor("#000000"); 
+    const goToStep3 = () => {
+        if (!botName.trim()) {
+            toast.error("You must enter a botify name.");
+            return
         }
-    }, [selectedLayout]);
+
+        // Pass name to CreateChatbot3 via query param
+        router.push(`/CreateChatbot3?name=${encodeURIComponent(botName)}`)
+    }
 
     const handleAddMessage = () => {
         setMessages([...messages, ""]);
@@ -72,13 +72,8 @@ export default function CreateChatbot2() {
             setLogo(imageUrl);
         }
     };
-    const layouts: { id: "chat" | "tab"; icon: any; title: string; description: string }[] = [
-        {
-            id: "tab",
-            icon: LayoutPanelTop,
-            title: "Tabs Layout",
-            description: "Create a personalised homepage for your visitors.",
-        },
+    const layouts: { id: "chat"; icon: any; title: string; description: string }[] = [
+
         {
             id: "chat",
             icon: PanelBottom,
@@ -120,17 +115,7 @@ export default function CreateChatbot2() {
                         <div className="flex justify-between items-center">
                             <h2 className="text-2xl font-bold">Create your chatbot</h2>
 
-                            {/* Language Select */}
-                            <Select onValueChange={(val) => setLanguage(val)} value={language}>
-                                <SelectTrigger className="w-40">
-                                    <SelectValue placeholder="English" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    <SelectItem value="en">English</SelectItem>
-                                    <SelectItem value="ar">Arabic</SelectItem>
-                                    <SelectItem value="fr">French</SelectItem>
-                                </SelectContent>
-                            </Select>
+
                         </div>
 
                         {/* Widget Themes */}
@@ -182,9 +167,9 @@ export default function CreateChatbot2() {
                         </div>
 
                         {/* Layout Toggle */}
-                        <div>
+                        <div className="">
                             <h3 className="font-medium text-lg mb-2">Layout</h3>
-                            <div className="grid grid-cols-2 gap-4">
+                            <div className=" p-2 ">
                                 {layouts.map((layout) => {
                                     const isSelected = selectedLayout === layout.id
                                     const Icon = layout.icon
@@ -408,7 +393,7 @@ export default function CreateChatbot2() {
 
 
                         <div className="flex justify-center">
-                                <Button className="bg-brand-primary hover:bg-brand-secondary" onClick={() => router.push("/CreateChatbot3")}>Create Chatbot</Button>
+                            <Button className="bg-brand-primary hover:bg-brand-secondary" onClick={goToStep3}>Train Chatbot</Button>
                         </div>
                     </div>
                 </div>

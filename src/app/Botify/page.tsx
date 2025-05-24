@@ -1,41 +1,42 @@
 "use client";
-import React, { useState } from "react";
-import SideBar2 from "@/components/SideBar2/SideBar2";
-import IntegrationHeader from "@/components/IntegrationHeader/IntegrationHeader";
-import IntegrationCardList from "@/components/IntegrationCardList/IntegrationCardList";
 
-const tabs = [
-  { key: "conversations", label: "Conversations" },
-  { key: "integrations", label: "Integrations" },
-  { key: "settings", label: "Settings" },
-];
+import React from "react";
+import { useRouter } from "next/navigation";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { MessageCircle, ArrowRight } from "lucide-react";
 
-export default function Page() {
-  const [activeTab, setActiveTab] = useState("conversations");
-
-  const renderContent = () => {
-    switch (activeTab) {
-      case "integrations":
-        return (
-          <>
-            <IntegrationHeader />
-            <IntegrationCardList />
-          </>
-        );
-      case "settings":
-        return <div>Settings content goes here</div>;
-      default:
-        return <div>Conversations content goes here</div>;
-    }
-  };
+export default function BotifyMainPage() {
+  const router = useRouter();
 
   return (
-    <div className="flex min-h-screen">
-      <SideBar2
-        selected={activeTab}
-        onSelect={(key: string) => setActiveTab(key)}
-      />
-      <main className="flex-1 p-6">{renderContent()}</main>
+    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800">
+      <Card className="w-full max-w-md mx-4">
+        <CardHeader className="text-center">
+          <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-primary/10">
+            <MessageCircle className="h-8 w-8 text-primary" />
+          </div>
+          <CardTitle className="text-2xl">Welcome to Botify</CardTitle>
+          <p className="text-muted-foreground">
+            Select a chatbot to view its conversations and manage integrations
+          </p>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <Button
+            onClick={() => router.push("/Chatbots")}
+            className="w-full"
+            size="lg"
+          >
+            View My Chatbots
+            <ArrowRight className="ml-2 h-4 w-4" />
+          </Button>
+          <div className="text-center">
+            <p className="text-sm text-muted-foreground">
+              Choose a chatbot from your list to access its dashboard
+            </p>
+          </div>
+        </CardContent>
+      </Card>
     </div>
   );
 }

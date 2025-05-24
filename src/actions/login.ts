@@ -6,9 +6,16 @@ import { storeTokens } from './tokenManager';
 /**
  * Handles user sign in and storing the tokens in the cookies.
  * @param body Sign in credentials.
- * @returns Result object with success status and error message if applicable.
+ * @returns Result object with success status, tokens, and error message if applicable.
  */
-export async function login(body: LoginBody): Promise<{ success: boolean, error?: string }> {
+export async function login(body: LoginBody): Promise<{ 
+    success: boolean, 
+    tokens?: { 
+        access: string, 
+        refresh: string 
+    }, 
+    error?: string 
+}> {
     try {
         const response = await customFetch<LoginResponse>({
             endpoint: '/auth/login/',
@@ -16,9 +23,18 @@ export async function login(body: LoginBody): Promise<{ success: boolean, error?
             method: 'POST',
             requiresAuth: false,
         });
-
+        console.log(response);
+        // Store tokens in server-side cookies
         await storeTokens(response.access, response.refresh);
-        return { success: true };
+        
+        // Return tokens to the client for local storage
+        return { 
+            success: true,
+            tokens: {
+                access: response.access,
+                refresh: response.refresh
+            }
+        };
     } catch (error) {
         return {
             success: false,
