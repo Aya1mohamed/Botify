@@ -10,7 +10,7 @@ import QRCodeIntegration from "../QRCodeIntegration/QRCodeIntegration"
 const sources = ["link", "script", "iframe", "widget UID","QR Code"] as const
 type SourceType = typeof sources[number]
 
-export default function IntegrationHeader() {
+export default function IntegrationHeader({ chatbotId }: { chatbotId: string }) {
   const [source, setSource] = useState<SourceType>("link")
 
   const renderSourceComponent = () => {
@@ -22,7 +22,7 @@ export default function IntegrationHeader() {
       case "iframe":
         return <IframeIntegration />
       case "widget UID":
-        return <WidgetUIDIntegration />
+        return <WidgetUIDIntegration chatbotId={chatbotId} />
         case "QR Code":
             return <QRCodeIntegration />
         

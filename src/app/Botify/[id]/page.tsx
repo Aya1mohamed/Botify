@@ -159,7 +159,7 @@ export default function BotifyPage() {
       case "integrations":
         return (
           <>
-            <IntegrationHeader />
+            <IntegrationHeader chatbotId={chatbotId} />
             <IntegrationCardList />
           </>
         );
