@@ -63,7 +63,7 @@ export async function customFetch<T>({
 }): Promise<T> {
     const fullUrl = `${process.env.NEXT_PUBLIC_API_URL}${endpoint}`;
     let accessToken;
-
+    console.log(fullUrl);
     if (requiresAuth) {
         try {
             accessToken = await getAccessToken();
@@ -104,6 +104,8 @@ export async function customFetch<T>({
 
     try {
         const response = await fetch(fullUrl, fetchOptions);
+        // const responseData = await response.json();
+        // console.log(responseData);
         if (!response.ok) {
             if (response.status === UNAUTHORIZED) {
                 handleReLogin(isClientSide() ? window.location.href : undefined);

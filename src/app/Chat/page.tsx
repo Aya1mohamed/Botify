@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Card } from "@/components/ui/card";
 import { Send } from "lucide-react";
+import { useGenerateResponse } from "@/hooks/useGenerateResponse";
 
 interface Message {
   id: string;
@@ -18,10 +19,10 @@ interface Message {
 export default function ChatPage() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputValue, setInputValue] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const searchParams = useSearchParams();
   const router = useRouter();
+  const { sendMessage: generateBotResponse, loading: isLoading, error: responseError } = useGenerateResponse();
   
   const chatbotId = searchParams.get("chatbot_id") || null;
   const sessionId = searchParams.get("session_id") || null;
@@ -47,37 +48,38 @@ export default function ChatPage() {
     };
     
     setMessages(prev => [...prev, userMessage]);
+    const currentInput = inputValue;
     setInputValue("");
-    setIsLoading(true);
     
     try {
-      const response = await fetch("http://127.0.0.1:8002/api/generate-response/", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "accept": "application/json",
-        },
-        body: JSON.stringify({
-          original_text: inputValue,
-          chatbot_id: chatbotId,
-          session_id: sessionId
-        }),
+      const botResponse = await generateBotResponse({
+        original_text: currentInput,
+        chatbot_id: chatbotId,
+        session_id: sessionId
       });
       
-      if (!response.ok) {
-        throw new Error("Failed to get response");
+      if (botResponse) {
+        // If this is the first message and we got a new session_id, update the URL
+        if (!sessionId && botResponse.session_id) {
+          const params = new URLSearchParams(searchParams.toString());
+          params.set("session_id", botResponse.session_id);
+          router.push(`/Chat?${params.toString()}`);
+        }
+        
+        setMessages(prev => [...prev, botResponse]);
+      } else if (responseError) {
+        // Add error message if the response failed
+        setMessages(prev => [
+          ...prev,
+          {
+            id: Date.now().toString(),
+            session_id: sessionId || "",
+            original_text: `Sorry, there was an error processing your request: ${responseError}`,
+            sender: "bot",
+            timestamp: new Date().toISOString(),
+          },
+        ]);
       }
-      
-      const botResponse: Message = await response.json();
-      
-      // If this is the first message and we got a new session_id, update the URL
-      if (!sessionId && botResponse.session_id) {
-        const params = new URLSearchParams(searchParams.toString());
-        params.set("session_id", botResponse.session_id);
-        router.push(`/Chat?${params.toString()}`);
-      }
-      
-      setMessages(prev => [...prev, botResponse]);
     } catch (error) {
       console.error("Error sending message:", error);
       // Add error message
@@ -91,8 +93,6 @@ export default function ChatPage() {
           timestamp: new Date().toISOString(),
         },
       ]);
-    } finally {
-      setIsLoading(false);
     }
   };
 
