@@ -40,7 +40,7 @@ export default function BotifyPage() {
       return;
     }
 
-    const ws = new WebSocket(`ws://botify-production.up.railway.app/ws/chat/${selectedSession}/`);
+    const ws = new WebSocket(`wss://botify-production.up.railway.app/ws/chat/${selectedSession}/`);
 
     ws.onopen = () => {
       console.log('WebSocket connected');
