@@ -3,11 +3,7 @@
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
 
-interface WebsiteFormProps {
-  onData: (data: string) => void; // Accepts training data
-}
-
-export default function WebsiteForm({ onData }: WebsiteFormProps) {
+export default function WebsiteForm() {
   const [url, setUrl] = useState("");
 
   const handleUrlChange = (e: React.ChangeEvent<HTMLInputElement>) => {

@@ -1,21 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import { Button } from "../ui/button";
 import { Textarea } from "../ui/textarea";
 
-interface TextFormProps {
-  onData: (data: string) => void; // Accepts training data
-}
-
-export default function TextForm({ onData }: TextFormProps) {
+export default function TextForm() {
   const [textData, setTextData] = useState("");
-
-  const handleTraining = () => {
-    if (textData.trim()) {
-      onData(textData); // Send text data
-    }
-  };
 
   return (
     <div className="p-1 rounded-lg space-y-4 shadow-sm bg-white">

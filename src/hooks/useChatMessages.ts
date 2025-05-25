@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { getChatMessages } from "@/actions/chat";
 import { Message } from "@/services/types/chat";
 
@@ -9,7 +9,7 @@ export const useChatMessages = (sessionId: string | null) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const fetchMessages = async () => {
+  const fetchMessages = useCallback(async () => {
     if (!sessionId) {
       setMessages([]);
       return;
@@ -32,11 +32,11 @@ export const useChatMessages = (sessionId: string | null) => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [sessionId]);
 
   useEffect(() => {
     fetchMessages();
-  }, [sessionId]);
+  }, [fetchMessages]);
 
   return {
     messages,

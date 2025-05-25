@@ -2,14 +2,9 @@
 
 import { useState } from "react";
 import { Button } from "../ui/button";
-import { Textarea } from "../ui/textarea";
 import { Input } from "../ui/input";
 
-interface FAQFormProps {
-  onData: (data: string[]) => void; // Accepts training data
-}
-
-export default function FAQForm({ onData }: FAQFormProps) {
+export default function FAQForm() {
   const [faqs, setFaqs] = useState([""]);
 
   const handleAddFAQ = () => {

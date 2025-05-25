@@ -4,6 +4,7 @@ import {
     RegisterOptions,
     UseFormRegisterReturn,
     UseFormReturn,
+    FieldErrors,
 } from 'react-hook-form';
 
 /**
@@ -32,7 +33,7 @@ export interface UseSanitizedFormReturn<TFieldValues extends FieldValues = Field
 
     handleSubmit: (
         onValid: (data: TFieldValues) => void,
-        onInvalid?: any,
+        onInvalid?: (errors: FieldErrors<TFieldValues>) => void,
         sanitizerOverride?: (input?: string) => string
     ) => (e?: React.BaseSyntheticEvent) => Promise<void>;
 }

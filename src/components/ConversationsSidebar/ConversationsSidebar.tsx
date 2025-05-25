@@ -1,7 +1,7 @@
 import React from 'react';
 import { Search, Pencil, ChevronLeft } from 'lucide-react';
 import Image from 'next/image';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 export default function ConversationsSidebar() {
   const [collapsed, setCollapsed] = useState(false);

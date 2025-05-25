@@ -1,5 +1,4 @@
 import React from 'react';
-import { FaTelegramPlane, FaFacebookMessenger, FaInstagram, FaWhatsapp, FaDiscord } from 'react-icons/fa';
 import { Button } from "@/components/ui/button";
 import { Input } from '../ui/input';
 import Image from 'next/image';

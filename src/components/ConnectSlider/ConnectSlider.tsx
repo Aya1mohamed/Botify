@@ -33,7 +33,7 @@ const tools2 = [
 ]
 
 export default function ConnectSlider() {
-    const [sliderRef1, instanceRef1] = useKeenSlider<HTMLDivElement>({
+    const [sliderRef1] = useKeenSlider<HTMLDivElement>({
         loop: true,
         renderMode: "performance",
         breakpoints: {
@@ -52,7 +52,7 @@ export default function ConnectSlider() {
         },
     })
 
-    const [sliderRef2, instanceRef2] = useKeenSlider<HTMLDivElement>({
+    const [sliderRef2] = useKeenSlider<HTMLDivElement>({
         loop: true,
         renderMode: "performance",
         breakpoints: {

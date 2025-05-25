@@ -9,7 +9,7 @@ export default function AllApps() {
     <div className="px-6">
 
       <h1 className="text-2xl font-bold text-brand-primary">Botify Apps</h1>
-      <p className="text-gray-400">Click 'Access Now' to start using any Botify application</p>
+      <p className="text-gray-400">Click &apos;Access Now&apos; to start using any Botify application</p>
       {/* All apps content here */}
       <Card className="w-full max-w-md bg-background text-foreground shadow-md text-center dark:bg-zinc-900 mt-6">
         <CardHeader className="flex flex-col items-center gap-1">

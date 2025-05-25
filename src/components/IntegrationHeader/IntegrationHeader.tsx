@@ -1,7 +1,6 @@
 "use client"
 
 import { useState } from "react"
-import { useRouter } from "next/navigation"
 import LinkIntegration from "../LinkIntegration/LinkIntegration"
 import ScriptIntegration from "../ScriptIntegration/ScriptIntegration"
 import IframeIntegration from "../IframeIntegration/IframeIntegration"
@@ -13,7 +12,6 @@ type SourceType = typeof sources[number]
 
 export default function IntegrationHeader() {
   const [source, setSource] = useState<SourceType>("link")
-  const router = useRouter()
 
   const renderSourceComponent = () => {
     switch (source) {

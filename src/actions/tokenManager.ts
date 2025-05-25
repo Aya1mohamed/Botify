@@ -17,15 +17,15 @@ class TokenManager {
         return TokenManager.instance;
     }
 
-    private getTokenFromCookies() {
-        const cookieStore = cookies();
+    private async getTokenFromCookies() {
+        const cookieStore = await cookies();
         this.accessToken = cookieStore.get(ACCESS_TOKEN)?.value ?? null;
         this.refreshToken = cookieStore.get(REFRESH_TOKEN)?.value ?? null;
     }
 
-    public setTokensToCookies(accessToken: string, refreshToken?: string) {
+    public async setTokensToCookies(accessToken: string, refreshToken?: string) {
         console.log(accessToken, refreshToken);
-        const cookieStore = cookies();
+        const cookieStore = await cookies();
         cookieStore.set(ACCESS_TOKEN, accessToken, {
             httpOnly: true,
             secure: true,
@@ -41,8 +41,8 @@ class TokenManager {
         }
     }
 
-    public deleteTokens() {
-        const cookieStore = cookies();
+    public async deleteTokens() {
+        const cookieStore = await cookies();
         cookieStore.delete(ACCESS_TOKEN);
         cookieStore.delete(REFRESH_TOKEN);
         this.accessToken = null;
@@ -78,21 +78,21 @@ class TokenManager {
 
             if (response.ok) {
                 const { accessToken, refreshToken } = await response.json();
-                this.setTokensToCookies(accessToken, refreshToken);
+                await this.setTokensToCookies(accessToken, refreshToken);
             } else {
                 // Clear tokens if refresh failed
-                this.deleteTokens();
+                await this.deleteTokens();
             }
         } catch (error) {
             console.error('Error refreshing token:', error);
             // Clear tokens on error
-            this.deleteTokens();
+            await this.deleteTokens();
         }
     }
 
     public async getAccessToken(): Promise<string | null> {
         try {
-            this.getTokenFromCookies();
+            await this.getTokenFromCookies();
 
             if (!this.accessToken) {
                 return null;
@@ -147,7 +147,7 @@ export async function storeTokens(
     refreshToken?: string,
 ): Promise<void> {
     const tokenManager = TokenManager.getInstance();
-    tokenManager.setTokensToCookies(accessToken, refreshToken);
+    await tokenManager.setTokensToCookies(accessToken, refreshToken);
 }
 
 /**
@@ -155,7 +155,7 @@ export async function storeTokens(
  */
 export async function deleteTokens(): Promise<void> {
     const tokenManager = TokenManager.getInstance();
-    tokenManager.deleteTokens();
+    await tokenManager.deleteTokens();
 }
 
 /**

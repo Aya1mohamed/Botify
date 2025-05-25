@@ -6,6 +6,7 @@ import {
   Mail,
 } from 'lucide-react';
 import Link from 'next/link';
+import Image from 'next/image';
 
 export default function Footer() {
   return (
@@ -16,7 +17,7 @@ export default function Footer() {
           {/* Logo + Social */}
           <div className="flex flex-row justify-between items-center w-full gap-4">
             <div className="">
-              <img src="/home/logoo2.png" className='w-32' alt="Botify" />
+              <Image src="/home/logoo2.png" width={128} height={40} className='w-32' alt="Botify" />
             </div>
             <div className="flex gap-3">
               <IconBox  icon={<Facebook />} />

@@ -51,7 +51,7 @@ export const useSanitizedForm = <TFieldValues extends FieldValues = FieldValues>
 
         return {
             ...field,
-            onChange: onChange as any,
+            onChange: onChange as any, // eslint-disable-line @typescript-eslint/no-explicit-any
         };
     };
 
@@ -60,7 +60,7 @@ export const useSanitizedForm = <TFieldValues extends FieldValues = FieldValues>
         onInvalid,
         sanitizerOverride
     ) => {
-        return methods.handleSubmit((data, e) => {
+        return methods.handleSubmit((data) => {
             const sanitized = Object.fromEntries(
                 Object.entries(data).map(([key, val]) => [
                     key,

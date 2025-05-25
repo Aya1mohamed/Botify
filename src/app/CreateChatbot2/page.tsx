@@ -1,12 +1,5 @@
 "use client"
 import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from "@/components/ui/select"
-import {
     Accordion,
     AccordionContent,
     AccordionItem,
@@ -15,9 +8,9 @@ import {
 import { HexColorPicker } from "react-colorful"
 import { Button } from "@/components/ui/button"
 import { useRouter } from "next/navigation"
-import { ArrowLeft, PanelBottom, LayoutPanelTop, RotateCcw, Paperclip, MinusCircle } from "lucide-react"
+import { ArrowLeft, PanelBottom, RotateCcw, Paperclip, MinusCircle } from "lucide-react"
 import Navbar2 from "@/components/Navbar2/Navbar2"
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import { Card, CardContent } from "@/components/ui/card"
 import { toast } from "sonner";
 import Image from "next/image"
@@ -72,7 +65,7 @@ export default function CreateChatbot2() {
             setLogo(imageUrl);
         }
     };
-    const layouts: { id: "chat"; icon: any; title: string; description: string }[] = [
+    const layouts: { id: "chat"; icon: React.ComponentType<{ className?: string }>; title: string; description: string }[] = [
 
         {
             id: "chat",

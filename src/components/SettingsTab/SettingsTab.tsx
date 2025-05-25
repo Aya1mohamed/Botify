@@ -10,7 +10,6 @@ import {
     DialogFooter,
     DialogClose,
 } from "@/components/ui/dialog"
-import { Pencil, Trash2, FileText } from "lucide-react"
 import { Input } from "@/components/ui/input"
 export default function SettingsTab() {
     return (

@@ -71,13 +71,13 @@ export default function CreateChatbot3() {
   const renderSourceComponent = () => {
     switch (selectedSource) {
       case "website":
-        return <WebsiteForm onData={(data) => setTrainingData(data)} />;
+        return <WebsiteForm />;
       case "document":
         return <DocumentForm onData={(data) => setTrainingData(data)} />;
       case "faq":
-        return <FAQForm onData={(data) => setTrainingData(data)} />;
+        return <FAQForm />;
       case "text":
-        return <TextForm onData={(data) => setTrainingData(data)} />;
+        return <TextForm />;
       default:
         return null;
     }

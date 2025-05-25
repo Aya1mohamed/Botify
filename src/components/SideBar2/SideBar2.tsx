@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from 'react';
-import { MessagesSquare, Workflow, Settings, ChevronLeft } from "lucide-react";
+import { MessagesSquare, Settings, ChevronLeft } from "lucide-react";
 import Image from 'next/image';
 import { IoExtensionPuzzleOutline } from "react-icons/io5";
 

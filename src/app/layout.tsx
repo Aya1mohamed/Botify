@@ -4,6 +4,7 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/themeprovider/theme-provider";
 import { AuthProvider } from "@/components/AuthProvider/AuthProvider";
 import {Toaster} from "sonner";
+import { Suspense } from "react";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -39,7 +40,9 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <AuthProvider>
-            {children}
+            <Suspense fallback={<div>Loading...</div>}>
+              {children}
+            </Suspense>
             <Toaster richColors position="top-center" />
           </AuthProvider>
         </ThemeProvider>
