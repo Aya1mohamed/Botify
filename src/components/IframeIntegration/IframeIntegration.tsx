@@ -9,7 +9,7 @@ const IframeIntegration = () => {
   };
 
   return (
-    <div className="bg-gray-900 w-fit text-white text-xs p-4 rounded-md gap-2 flex  items-center justify-between">
+    <div className="bg-gray-900 dark:bg-gray-800 w-fit text-white text-xs p-4 rounded-md gap-2 flex  items-center justify-between">
       <pre>{iframeCode}</pre>
       <button
         onClick={handleCopy}

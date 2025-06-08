@@ -7,6 +7,7 @@ import Link from 'next/link'
 import Navbar2 from '@/components/Navbar2/Navbar2'
 import { useChatbots } from '@/hooks/useChatbots'
 import { useRouter } from 'next/navigation'
+import { ArrowLeft } from "lucide-react"
 
 export default function CreateChatbotPage() {
     const { chatbots, loading, error } = useChatbots();
@@ -48,6 +49,13 @@ export default function CreateChatbotPage() {
     if (chatbots.length > 0) {
         return (
             <div className="min-h-screen bg-white flex flex-col">
+                <Button
+                    variant="ghost"
+                    className="mb-6 flex items-center gap-2 text-gray-400 hover:text-black"
+                    onClick={() => router.back()}
+                >
+                    <ArrowLeft className="w-4 h-4" /> Back
+                </Button>
                 <Navbar2 />
                 <main className="flex-grow flex flex-col items-center justify-center text-center py-4">
                     <div>Redirecting to your chatbots...</div>
@@ -58,11 +66,21 @@ export default function CreateChatbotPage() {
 
     // Only render the create chatbot page if user has no chatbots
     return (
-        <div className="min-h-screen bg-white flex flex-col">
+        <div className="min-h-screen bg-white dark:bg-gray-900 flex flex-col">
             <Navbar2 />
 
             {/* Main Content */}
-            <main className="flex-grow flex flex-col items-center justify-center text-center py-4">
+            <main className="flex-grow flex flex-col items-center justify-center text-center py-4 gap-2">
+                <div className='w-full px-6'>
+                <Button
+                    variant="ghost"
+                    className="mb-6 flex items-center gap-2 text-gray-400 hover:text-black"
+                    onClick={() => router.back()}
+                >
+                    <ArrowLeft className="w-4 h-4" /> Back
+                </Button>                    
+                </div>
+
                 <Image
                     src="/Party.svg"
                     alt="Celebrate Icon"
@@ -70,8 +88,8 @@ export default function CreateChatbotPage() {
                     height={150}
                     className="mb-6 animate-shake"
                 />
-                <h1 className="text-2xl font-bold mb-4">Create BOTIFY Chatbot</h1>
-                <p className="text-gray-600 mb-6 max-w-xl">
+                <h1 className="text-2xl font-bold mb-4 text-brand-primary">Create BOTIFY Chatbot</h1>
+                <p className="text-gray-600 dark:text-gray-300mb-6 max-w-xl">
                     Take your business to the next level with a powerful AI chatbot, just like ChatGPT
                 </p>
                 <Link href="/CreateChatbot2">

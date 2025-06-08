@@ -25,8 +25,8 @@ export default function Navbar2() {
       }
     return (
         <div className='fixed top-0 w-full bg-white dark:bg-transparent backdrop-blur z-50 flex justify-between items-center px-2 md:px-16 py-1 border-b '>
-            <div className='w-16'>
-                <img src="/home/logoo.png" alt="Logo" />
+            <div className='w-16 cursor-pointer'>
+                <img src="/home/logoo.png" onClick={() => router.push('/Dashboard')} alt="Logo" />
             </div>
 
             <div className=" flex gap-3 items-center text-center">

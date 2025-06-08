@@ -38,8 +38,8 @@ export default function IntegrationHeader({ chatbotId }: { chatbotId: string }) 
         </div>
       </div>
 
-      <div className="bg-white rounded-lg space-y-4">
-        <div className="flex gap-2 bg-gray-100 p-1 rounded-md w-fit">
+      <div className="bg-white dark:bg-gray-900 rounded-lg space-y-4">
+        <div className="flex gap-2 bg-gray-100 dark:bg-gray-800 p-1 rounded-md w-fit">
           {sources.map((s) => {
             return (
               <button

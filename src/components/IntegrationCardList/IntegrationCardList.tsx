@@ -16,12 +16,12 @@ const IntegrationCardList = () => {
     <div className="mt-8">
       <div className='flex justify-between gap-1 mb-2'>
         <h3 className="text-md font-semibold mb-4">Other integrations</h3>
-        <Input className='w-fit' placeholder='Search...' />
+        <Input className='w-fit dark:bg-gray-800' placeholder='Search...' />
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {cards.map((card) => (
-          <div key={card.name} className="border rounded-md p-4 bg-white shadow-sm">
+          <div key={card.name} className="border rounded-md p-4 bg-white dark:bg-gray-800 shadow-sm">
             <div className="flex flex-col items-start gap-2 mb-2">
               <h4 className="font-medium text-md">{card.name}</h4>
               {card.icon}

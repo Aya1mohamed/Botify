@@ -7,44 +7,41 @@ import { Separator } from "@/components/ui/separator"
 import { Pencil } from "lucide-react"
 import Link from "next/link"
 import { toast } from "sonner"
+import { jwtDecode } from "jwt-decode"
+import { ACCESS_TOKEN } from "@/constants/tokens"
+import { useRouter } from "next/navigation"
 
 type UserData = {
-  firstName: string
-  lastName: string
   email: string
-  password: string
-  phone: string
+  first_name: string
+  last_name: string
+  phone_number: string
+  username: string
 }
 
 export default function Account() {
+  const router = useRouter()
   const [user, setUser] = useState<UserData | null>(null)
   const [firstName, setFirstName] = useState("")
   const [lastName, setLastName] = useState("")
 
   useEffect(() => {
-    const storedUser = localStorage.getItem("botify_user")
-    if (storedUser) {
-      const parsedUser: UserData = JSON.parse(storedUser)
-      setUser(parsedUser)
-      setFirstName(parsedUser.firstName)
-      setLastName(parsedUser.lastName)
-    }
-  }, [])
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    if (!user) return
-
-    const updatedUser = {
-      ...user,
-      firstName,
-      lastName,
+    const token = localStorage.getItem(ACCESS_TOKEN)
+    if (!token) {
+      router.push("/auth/Login")
+      return
     }
 
-    localStorage.setItem("botify_user", JSON.stringify(updatedUser))
-    setUser(updatedUser)
-    toast.success("Name updated successfully")
-  }
+    try {
+      const decodedToken = jwtDecode<UserData>(token)
+      setUser(decodedToken)
+      setFirstName(decodedToken.first_name || decodedToken.username || "")
+      setLastName(decodedToken.last_name || "")
+    } catch (error) {
+      console.error("Error decoding token:", error)
+      router.push("/auth/Login")
+    }
+  }, [router])
 
   if (!user) {
     return (
@@ -53,23 +50,26 @@ export default function Account() {
       </div>
     )
   }
+  const avatarChar = firstName.charAt(0) || user.username?.charAt(0) || "?"
 
   return (
     <div className="w-full max-w-md mx-auto mt-10 px-4 text-center space-y-6">
       {/* Avatar */}
       <div className="flex flex-col items-center gap-2">
         <div className="bg-purple-400 text-white w-16 h-16 flex items-center justify-center rounded-full text-xl font-semibold">
-          {firstName.charAt(0)}
+          {avatarChar}
         </div>
         <div className="flex items-center gap-2 justify-center">
-          <h2 className="text-xl font-bold">{firstName} {lastName}</h2>
+          <h2 className="text-xl font-bold">
+            {firstName || user.username} {lastName}
+          </h2>
           <Pencil className="w-4 h-4 text-gray-500 hover:text-black cursor-pointer" />
         </div>
         <p className="text-gray-500 text-sm">{user.email}</p>
       </div>
 
       {/* Edit Name Form */}
-      <form className="space-y-4" onSubmit={handleSubmit}>
+      <form className="space-y-4" onSubmit={(e) => e.preventDefault()}>
         <div>
           <label className="block text-left text-sm font-medium mb-1" htmlFor="firstName">
             First Name

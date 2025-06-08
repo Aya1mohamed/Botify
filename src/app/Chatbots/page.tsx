@@ -2,7 +2,7 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import Image from "next/image"
-import { Bell, Plus } from "lucide-react"
+import { ArrowLeft, Bell, Plus } from "lucide-react"
 import { MdAccountCircle } from "react-icons/md"
 import { Pencil, Trash2 } from "lucide-react"
 import {
@@ -20,7 +20,7 @@ import {
     DropdownMenuItem,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { User, LogOut, ChevronDown} from "lucide-react"
+import { User, LogOut, ChevronDown } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { useChatbots } from "@/hooks/useChatbots"
@@ -57,9 +57,9 @@ export default function ChatbotsPage() {
                         <DropdownMenu>
                             <DropdownMenuTrigger asChild>
                                 <Button className="flex items-center gap-2 px-4 py-2 border bg-gradient-to-t from-gray-300 to-white text-gray-400 hover:text-black shadow hover:shadow-md transition">
-                                <MdAccountCircle className='w-4 h-4 ' />
-                                <span className="text-sm font-medium">Account</span>
-                                <ChevronDown className="w-4 h-4"/>
+                                    <MdAccountCircle className='w-4 h-4 ' />
+                                    <span className="text-sm font-medium">Account</span>
+                                    <ChevronDown className="w-4 h-4" />
                                 </Button>
                             </DropdownMenuTrigger>
                             <DropdownMenuContent className="w-40 mt-2">
@@ -79,14 +79,7 @@ export default function ChatbotsPage() {
                 <div className="p-28">
                     <div className="flex justify-between items-center mb-6">
                         <div>Loading chatbots...</div>
-                        <Button 
-                            onClick={handleAddChatbot}
-                            className="bg-gradient-to-r from-brand-primary to-brand-secondary hover:from-brand-secondary hover:to-brand-accent text-white shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
-                            size="lg"
-                        >
-                            <Plus className="w-5 h-5 mr-2" />
-                            Add Chatbot
-                        </Button>
+
                     </div>
                 </div>
             </div>
@@ -112,9 +105,9 @@ export default function ChatbotsPage() {
                         <DropdownMenu>
                             <DropdownMenuTrigger asChild>
                                 <Button className="flex items-center gap-2 px-4 py-2 border bg-gradient-to-t from-gray-300 to-white text-gray-400 hover:text-black shadow hover:shadow-md transition">
-                                <MdAccountCircle className='w-4 h-4 ' />
-                                <span className="text-sm font-medium">Account</span>
-                                <ChevronDown className="w-4 h-4"/>
+                                    <MdAccountCircle className='w-4 h-4 ' />
+                                    <span className="text-sm font-medium">Account</span>
+                                    <ChevronDown className="w-4 h-4" />
                                 </Button>
                             </DropdownMenuTrigger>
                             <DropdownMenuContent className="w-40 mt-2">
@@ -134,7 +127,7 @@ export default function ChatbotsPage() {
                 <div className="p-28">
                     <div className="flex justify-between items-center mb-6">
                         <div className="text-red-500">Error loading chatbots: {error}</div>
-                        <Button 
+                        <Button
                             onClick={handleAddChatbot}
                             className="bg-gradient-to-r from-brand-primary to-brand-secondary hover:from-brand-secondary hover:to-brand-accent text-white shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
                             size="lg"
@@ -151,8 +144,8 @@ export default function ChatbotsPage() {
     return (
         <div className="">
             <div className='fixed top-0 w-full bg-white dark:bg-transparent backdrop-blur z-50 flex justify-between items-center px-16 py-2 border-b '>
-                <div className='w-24'>
-                    <img src="/home/logoo.png" alt="Logo" />
+                <div className='w-24 cursor-pointer'>
+                    <img src="/home/logoo.png" alt="Logo" onClick={() => router.push('/Dashboard')} />
                 </div>
 
                 <div className=" flex gap-3 items-center text-center">
@@ -167,9 +160,9 @@ export default function ChatbotsPage() {
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild>
                             <Button className="flex items-center gap-2 px-4 py-2 border bg-gradient-to-t from-gray-300 to-white text-gray-400 hover:text-black shadow hover:shadow-md transition">
-                            <MdAccountCircle className='w-4 h-4 ' />
-                            <span className="text-sm font-medium">Account</span>
-                            <ChevronDown className="w-4 h-4"/>
+                                <MdAccountCircle className='w-4 h-4 ' />
+                                <span className="text-sm font-medium">Account</span>
+                                <ChevronDown className="w-4 h-4" />
 
                             </Button>
                         </DropdownMenuTrigger>
@@ -188,24 +181,27 @@ export default function ChatbotsPage() {
 
             </div>
 
-            <div className="p-28">
+            {/* Back button with proper spacing from fixed navbar */}
+            <div className='w-full px-6 pt-20 mt-2'>
+                <Button
+                    variant="ghost"
+                    className="mb-6 flex items-center gap-2 text-gray-400 hover:text-black"
+                    onClick={() => router.push('/Dashboard')}
+                >
+                    <ArrowLeft className="w-4 h-4" /> Back 
+                </Button>
+            </div>
+
+            <div className="px-28 py-5">
                 <div className="flex justify-between items-center mb-6">
                     <h1 className="text-xl">
                         You have {chatbots.length} {chatbots.length === 1 ? 'Chatbot' : 'Chatbots'}
                     </h1>
-                    <Button 
-                        onClick={handleAddChatbot}
-                        className="bg-gradient-to-r from-brand-primary to-brand-secondary hover:from-brand-secondary hover:to-brand-accent text-white shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
-                        size="lg"
-                    >
-                        <Plus className="w-5 h-5 mr-2" />
-                        Add Chatbot
-                    </Button>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                     {/* Add Chatbot Card */}
-                    <Card 
+                    <Card
                         className="w-full max-w-sm shadow-sm relative group transition hover:border-brand-accent dark:bg-zinc-900 cursor-pointer border-2 border-dashed border-gray-300 hover:border-brand-accent bg-gradient-to-br from-brand-primary/10 to-brand-accent/10 dark:from-brand-primary/20 dark:to-brand-accent/20"
                         onClick={handleAddChatbot}
                     >
@@ -228,7 +224,7 @@ export default function ChatbotsPage() {
 
                     {/* Existing Chatbots */}
                     {chatbots.map((chatbot) => (
-                        <Card 
+                        <Card
                             key={chatbot.id}
                             className="w-full max-w-sm shadow-sm relative group transition hover:border-black/30 dark:bg-zinc-900 cursor-pointer"
                             onClick={() => handleChatbotClick(chatbot.id)}
@@ -257,8 +253,8 @@ export default function ChatbotsPage() {
 
                                 {/* Icons hidden by default, visible on hover */}
                                 <div className="flex gap-2 mt-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-                                    <Pencil 
-                                        className="w-4 h-4 text-teal-700 cursor-pointer hover:scale-105 transition" 
+                                    <Pencil
+                                        className="w-4 h-4 text-teal-700 cursor-pointer hover:scale-105 transition"
                                         onClick={(e) => {
                                             e.stopPropagation();
                                             // Add edit functionality here
@@ -290,7 +286,7 @@ export default function ChatbotsPage() {
 
                             {/* Content */}
                             <CardContent className="pt-6 flex items-center gap-2 text-sm text-muted-foreground">
-                                <div 
+                                <div
                                     className="w-4 h-4 rounded-full border"
                                     style={{ backgroundColor: chatbot.primary_color }}
                                 />

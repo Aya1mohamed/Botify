@@ -12,11 +12,14 @@ import { useChatSessionsByChatbot } from "@/hooks/useChatSessionsByChatbot";
 import { useChatMessages } from "@/hooks/useChatMessages";
 import { Message } from "@/services/types/chat";
 import { useParams } from "next/navigation";
+import SettingsTab from "@/components/SettingsTab/SettingsTab";
+import { useChatbot } from "@/hooks/useChatbot";
 
 export default function BotifyPage() {
   const params = useParams();
   const chatbotId = params.id as string;
   const [activeTab, setActiveTab] = useState("conversations");
+  const { chatbot, loading: chatbotLoading } = useChatbot(chatbotId);
 
   // Chat sessions functionality - now fetching only for this chatbot
   const [selectedSession, setSelectedSession] = useState<string | null>(null);
@@ -86,7 +89,7 @@ export default function BotifyPage() {
             {/* Sessions List */}
             <div className="w-1/3 border-r border-border bg-muted/30">
               <div className="p-4 border-b">
-                <h2 className="text-lg font-semibold">Chat Sessions</h2>
+                <h2 className="text-lg font-semibold text-brand-primary">Chat Sessions</h2>
               </div>
               <ScrollArea className="h-[calc(100vh-5rem)]">
                 <div className="p-2 space-y-2">
@@ -117,7 +120,7 @@ export default function BotifyPage() {
             {/* Chat Messages */}
             <div className="flex-1 flex flex-col">
               <div className="p-4 border-b">
-                <h2 className="text-lg font-semibold">
+                <h2 className="text-lg font-semibold text-brand-primary">
                   {selectedSession 
                     ? `Chat History - ${sessions.find(s => s.id === selectedSession)?.chatbot.name}`
                     : "Select a session to view messages"}
@@ -164,9 +167,10 @@ export default function BotifyPage() {
           </>
         );
       case "settings":
-        return <div>Settings content goes here</div>;
-      default:
-        return <div>Conversations content goes here</div>;
+        if (chatbotLoading) {
+          return <div>Loading settings...</div>;
+        }
+        return <SettingsTab chatbotId={chatbotId} chatbotName={chatbot?.name || "Chatbot"} />;
     }
   };
 
@@ -176,7 +180,7 @@ export default function BotifyPage() {
         selected={activeTab}
         onSelect={(key: string) => setActiveTab(key)}
       />
-      <main className="flex-1 p-6">{renderContent()}</main>
+      <main className={`flex-1 ${activeTab !== "conversations" ? "p-6" : ""}`}>{renderContent()}</main>
     </div>
   );
 } 

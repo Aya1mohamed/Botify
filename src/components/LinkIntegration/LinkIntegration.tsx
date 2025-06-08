@@ -12,7 +12,7 @@ const LinkIntegration = () => {
     <div className="space-y-4">
 
 
-      <div className="bg-gray-100 px-4 py-3 rounded-md w-fit gap-2 flex  items-center justify-between">
+      <div className="bg-gray-100 dark:bg-gray-800 px-4 py-3 rounded-md w-fit gap-2 flex  items-center justify-between">
         <a href={widgetUrl} className="text-xs text-blue-600 underline break-all">
           {widgetUrl}
         </a>

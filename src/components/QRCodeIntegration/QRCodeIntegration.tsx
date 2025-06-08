@@ -3,7 +3,7 @@ import Image from "next/image";
 
 const QRCodeIntegration = () => {
   return (
-    <div className="bg-white p-4 rounded-md border w-fit">
+    <div className="bg-white dark:bg-gray-800 p-4 rounded-md border w-fit">
       <Image
         src="/qrcode.png" 
         alt="QR Code"

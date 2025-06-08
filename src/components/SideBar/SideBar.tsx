@@ -9,7 +9,7 @@ interface SidebarProps {
 
 export default function Sidebar({ selectedTab, setSelectedTab }: SidebarProps) {
   return (
-    <aside className="fixed top-16 left-0 h-[calc(100vh-64px)] bg-zinc-400 border-r px-2 py-6 w-20 sm:w-24 md:w-40 lg:w-56 transition-all duration-300">
+    <aside className="fixed top-16 left-0 h-[calc(100vh-64px)] bg-zinc-400 dark:bg-zinc-900 border-r px-2 py-6 w-20 sm:w-20 md:w-32 lg:w-56 transition-all duration-300">
       <nav className="space-y-2">
         <button
           onClick={() => setSelectedTab("apps")}

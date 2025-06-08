@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { useSearchParams } from "next/navigation"
+import { useSearchParams, useRouter } from "next/navigation"
 import {
   Popover,
   PopoverContent,
@@ -19,10 +19,11 @@ export default function Page() {
   const initialTab = searchParams.get("tab") || "apps"
   const [selectedTab, setSelectedTab] = useState(initialTab)
   const { logout, user } = useAuth()
+  const [mounted, setMounted] = useState(false)
+  const router = useRouter()
 
-  // Check authentication
   useEffect(() => {
-    // The AuthProvider will handle redirects if not authenticated
+    setMounted(true)
   }, [])
 
   const handleLogout = () => {
@@ -34,13 +35,18 @@ export default function Page() {
     <div>
       {/* Navbar */}
       <div className='fixed top-0 w-full bg-white dark:bg-transparent backdrop-blur z-50 flex justify-between items-center px-4 md:px-16 py-2 border-b '>
-        <div className='w-24'>
-          <img src="/home/logoo.png" alt="Logo" />
+        <div className='w-24 cursor-pointer'>
+          <img src="/home/logoo.png" onClick={() => router.push('/')}
+            alt="Logo" />
         </div>
         <Popover>
           <PopoverTrigger>
             <div className="flex items-center gap-2">
-              <span className="text-sm font-medium hidden md:inline">{user?.username || 'User'}</span>
+              {mounted && (
+                <span className="text-sm font-medium hidden md:inline">
+                  {user?.username || ''}
+                </span>
+              )}
               <MdAccountCircle className='w-8 h-8 cursor-pointer' />
             </div>
           </PopoverTrigger>
@@ -66,7 +72,7 @@ export default function Page() {
       <Sidebar selectedTab={selectedTab} setSelectedTab={setSelectedTab} />
 
       {/* Main content */}
-      <main className="pt-24 pl-60 p-6 w-full bg-gray-100 dark:bg-black">
+      <main className="pt-24 pl-20 md:pl-60 p-6 w-full bg-gray-100 dark:bg-black">
         {selectedTab === "apps" && <AllApps />}
         {/* {selectedTab === "chat-sessions" && <ChatSessions />} */}
         {selectedTab === "account" && <Account />}

@@ -13,7 +13,7 @@ const ScriptIntegration = () => {
   };
 
   return (
-    <div className="bg-gray-900 w-fit text-white text-xs p-4 rounded-md relative overflow-auto">
+    <div className="bg-gray-900 dark:bg-gray-800 w-fit text-white text-xs p-4 rounded-md relative overflow-auto">
       <button
         onClick={handleCopy}
         className="absolute top-2 right-2 p-1 rounded hover:bg-gray-800"

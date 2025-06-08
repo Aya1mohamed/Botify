@@ -90,7 +90,7 @@ export default function CreateChatbot2() {
 
 
     return (
-        <div className="min-h-screen bg-white">
+        <div className="min-h-screen bg-white dark:bg-gray-900">
             <Navbar2 />
 
             <div className="p-20 md:py-20 md:px-10 max-w-7xl mx-auto flex flex-col lg:flex-row gap-10">
@@ -116,7 +116,7 @@ export default function CreateChatbot2() {
                             <h3 className="font-medium text-lg mb-2">Widget Themes</h3>
                             <div className="flex gap-6">
                                 {/* Light Theme Group */}
-                                <div className="bg-gray-200 p-4 rounded-lg">
+                                <div className="bg-gray-200 dark:bg-gray-800 p-4 rounded-lg">
                                     <p className="text-sm mb-2">Light</p>
                                     <div className="flex gap-2">
                                         {["#634464", "#245F61", "#1D1D1D", "#0A2647", "#1976D2", "#388E3C", "#FF5722", "#FF9800"].map((color, i) => (
@@ -137,7 +137,7 @@ export default function CreateChatbot2() {
                                 </div>
 
                                 {/* Dark Theme Group */}
-                                <div className="bg-gray-200 p-4 rounded-lg">
+                                <div className="bg-gray-200 dark:bg-gray-800 p-4 rounded-lg">
                                     <p className="text-sm mb-2">Dark</p>
                                     <div className="flex gap-2">
                                         {["#634465", "#245F60", "#877ea5", "#6A57AB", "#7F73FA", "#445B77", "#0387F4", "#3CA340"].map((color, i) => (
@@ -160,7 +160,7 @@ export default function CreateChatbot2() {
                         </div>
 
                         {/* Layout Toggle */}
-                        <div className="">
+                        <div className=" dark:bg-gray-800">
                             <h3 className="font-medium text-lg mb-2">Layout</h3>
                             <div className=" p-2 ">
                                 {layouts.map((layout) => {
@@ -171,16 +171,16 @@ export default function CreateChatbot2() {
                                         <Card
                                             key={layout.id}
                                             onClick={() => setSelectedLayout(layout.id)}
-                                            className={`cursor-pointer transition-all ${isSelected ? "border-brand-secondary shadow-md bg-gray-100" : "hover:border-gray-300"
+                                            className={`cursor-pointer transition-all ${isSelected ? "border-brand-secondary shadow-md bg-gray-100 dark:bg-gray-700" : "hover:border-gray-300"
                                                 }`}
                                         >
                                             <CardContent className="p-6 flex flex-col items-center justify-center gap-3 text-center">
-                                                <Icon className={`w-6 h-6 ${isSelected ? "text-brand-secondary" : "text-muted-foreground"}`} />
+                                                <Icon className={`w-6 h-6 ${isSelected ? "text-brand-secondary dark:text-white" : "text-muted-foreground"}`} />
                                                 <div className="space-y-1">
-                                                    <div className={`text-sm font-semibold ${isSelected ? "text-brand-secondary" : ""}`}>
+                                                    <div className={`text-sm font-semibold ${isSelected ? "text-brand-secondary dark:text-white" : ""}`}>
                                                         {layout.title}
                                                     </div>
-                                                    <div className={`text-xs leading-tight ${isSelected ? "text-brand-secondary" : "text-muted-foreground"}`}>
+                                                    <div className={`text-xs leading-tight ${isSelected ? "text-brand-secondary dark:text-white" : "text-muted-foreground"}`}>
                                                         {layout.description}
                                                     </div>
                                                 </div>
@@ -193,7 +193,7 @@ export default function CreateChatbot2() {
 
                         {/* General Settings Accordion */}
                         <Accordion type="single" collapsible className="w-full">
-                            <AccordionItem value="item-0" className="my-3 bg-gray-100 data-[state=open]:bg-white border rounded-md px-2">
+                            <AccordionItem value="item-0" className="my-3 bg-gray-100 dark:bg-gray-800 data-[state=open]:bg-white border rounded-md px-2">
                                 <AccordionTrigger>General Settings</AccordionTrigger>
                                 <AccordionContent>
                                     <div className="flex flex-col md:flex-row gap-6 p-4">
@@ -251,7 +251,7 @@ export default function CreateChatbot2() {
                                     </div>
                                 </AccordionContent>
                             </AccordionItem>
-                            <AccordionItem value="item-1" className="my-3 bg-gray-100 data-[state=open]:bg-white border rounded-md px-2">
+                            <AccordionItem value="item-1" className="my-3 bg-gray-100 dark:bg-gray-800 data-[state=open]:bg-white border rounded-md px-2">
                                 <AccordionTrigger>Colors</AccordionTrigger>
                                 <AccordionContent>
                                     <div className="flex flex-col md:flex-row gap-8 p-4">
@@ -294,7 +294,7 @@ export default function CreateChatbot2() {
                                 </AccordionContent>
                             </AccordionItem>
 
-                            <AccordionItem value="item-2" className="my-3 bg-gray-100 data-[state=open]:bg-white border rounded-md px-2">
+                            <AccordionItem value="item-2" className="my-3 bg-gray-100 dark:bg-gray-800 data-[state=open]:bg-white border rounded-md px-2">
                                 <AccordionTrigger>Welcome Popup</AccordionTrigger>
                                 <AccordionContent>
                                     <p className="mb-4">
@@ -336,7 +336,7 @@ export default function CreateChatbot2() {
                             </AccordionItem>
 
 
-                            <AccordionItem value="item-3" className="my-3 bg-gray-100 data-[state=open]:bg-white border rounded-md px-2">
+                            <AccordionItem value="item-3" className="my-3 bg-gray-100 dark:bg-gray-800 data-[state=open]:bg-white border rounded-md px-2">
                                 <AccordionTrigger>
                                     Welcome Message
                                 </AccordionTrigger>
@@ -352,7 +352,7 @@ export default function CreateChatbot2() {
                                 </AccordionContent>
                             </AccordionItem>
 
-                            <AccordionItem value="item-4" className="my-3 bg-gray-100 data-[state=open]:bg-white border rounded-md px-2">
+                            <AccordionItem value="item-4" className="my-3 bg-gray-100 dark:bg-gray-800 data-[state=open]:bg-white border rounded-md px-2">
                                 <AccordionTrigger>Chat Input & Buttons</AccordionTrigger>
                                 <AccordionContent className="p-4 space-y-4">
                                     {/* Input Placeholder */}
@@ -386,7 +386,7 @@ export default function CreateChatbot2() {
 
 
                         <div className="flex justify-center">
-                            <Button className="bg-brand-primary hover:bg-brand-secondary" onClick={goToStep3}>Train Chatbot</Button>
+                            <Button className="bg-brand-primary hover:bg-brand-secondary dark:text-white" onClick={goToStep3}>Train Chatbot</Button>
                         </div>
                     </div>
                 </div>
