@@ -4,7 +4,7 @@ import { ACCESS_TOKEN } from '@/constants/tokens';
 import { jwtDecode } from 'jwt-decode';
 
 // Define public routes that don't require authentication
-const publicRoutes = ['/auth/Login', '/auth/Signup', '/api/auth'];
+const publicRoutes = ['/auth/Login', '/auth/Signup', '/api/auth', '/Chat'];
 
 // Function to check if a token is expired
 function isTokenExpired(token: string): boolean {
@@ -22,6 +22,8 @@ export async function middleware(request: NextRequest) {
 
   // Check if the requested path is a public route
   if (publicRoutes.some(route => pathname.startsWith(route))) {
+    console.log('Public route', pathname);
+
     // Allow access to public routes
     return NextResponse.next();
   }

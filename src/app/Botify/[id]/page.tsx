@@ -14,6 +14,10 @@ import { Message } from "@/services/types/chat";
 import { useParams } from "next/navigation";
 import SettingsTab from "@/components/SettingsTab/SettingsTab";
 import { useChatbot } from "@/hooks/useChatbot";
+import { useSendDashboardMessage } from "@/hooks/useSendDashboardMessage";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Send } from "lucide-react";
 
 export default function BotifyPage() {
   const params = useParams();
@@ -24,9 +28,13 @@ export default function BotifyPage() {
   // Chat sessions functionality - now fetching only for this chatbot
   const [selectedSession, setSelectedSession] = useState<string | null>(null);
   const { sessions, loading: sessionsLoading, error: sessionsError } = useChatSessionsByChatbot(chatbotId);
-  const { messages: initialMessages, loading: messagesLoading, error: messagesError } = useChatMessages(selectedSession);
   const [messages, setMessages] = useState<Message[]>([]);
+  const { messages: initialMessages, loading: messagesLoading, error: messagesError } = useChatMessages(selectedSession);
   const [socket, setSocket] = useState<WebSocket | null>(null);
+
+  // Message sending functionality
+  const [messageInput, setMessageInput] = useState("");
+  const { sendMessage, loading: sendingMessage, error: sendError } = useSendDashboardMessage();
 
   // Update messages when initialMessages changes
   useEffect(() => {
@@ -43,7 +51,7 @@ export default function BotifyPage() {
       return;
     }
 
-    const ws = new WebSocket(`wss://botify-production.up.railway.app/ws/chat/${selectedSession}/`);
+    const ws = new WebSocket(`${process.env.NEXT_PUBLIC_WEBSOCKET_URL}/ws/chat/${selectedSession}/`);
 
     ws.onopen = () => {
       console.log('WebSocket connected');
@@ -72,6 +80,23 @@ export default function BotifyPage() {
       }
     };
   }, [selectedSession]);
+
+  // Handle sending message
+  const handleSendMessage = async () => {
+    if (!selectedSession || !messageInput.trim()) return;
+
+    const success = await sendMessage(selectedSession, messageInput.trim());
+    if (success) {
+      setMessageInput("");
+      // Message will be received via WebSocket
+    }
+  };
+
+  // Handle form submission
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    handleSendMessage();
+  };
 
   const renderContent = () => {
     switch (activeTab) {
@@ -137,13 +162,13 @@ export default function BotifyPage() {
                     {messages.map((message) => (
                       <div
                         key={message.id}
-                        className={`flex ${message.sender === "user" ? "justify-end" : "justify-start"}`}
+                        className={`flex ${message.sender === "user" ? "justify-start" : "justify-end"}`}
                       >
                         <Card 
                           className={`max-w-[70%] p-3 ${
                             message.sender === "user" 
-                              ? "bg-primary text-primary-foreground" 
-                              : "bg-muted"
+                              ? "bg-muted" 
+                              : "bg-primary text-primary-foreground"
                           }`}
                         >
                           <p className="whitespace-pre-wrap break-words">{message.original_text}</p>
@@ -156,6 +181,35 @@ export default function BotifyPage() {
                   </div>
                 )}
               </ScrollArea>
+              
+              {/* Message Input */}
+              {selectedSession && (
+                <div className="p-4 border-t">
+                  {sendError && (
+                    <div className="text-red-500 text-sm mb-2">Error: {sendError}</div>
+                  )}
+                  <form onSubmit={handleSubmit} className="flex gap-2">
+                    <Input
+                      value={messageInput}
+                      onChange={(e) => setMessageInput(e.target.value)}
+                      placeholder="Type your message..."
+                      disabled={sendingMessage}
+                      className="flex-1"
+                    />
+                    <Button
+                      type="submit"
+                      disabled={sendingMessage || !messageInput.trim()}
+                      className="px-3"
+                    >
+                      {sendingMessage ? (
+                        <div className="w-4 h-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
+                      ) : (
+                        <Send className="h-4 w-4" />
+                      )}
+                    </Button>
+                  </form>
+                </div>
+              )}
             </div>
           </div>
         );

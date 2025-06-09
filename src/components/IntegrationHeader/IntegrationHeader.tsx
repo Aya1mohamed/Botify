@@ -18,7 +18,7 @@ export default function IntegrationHeader({ chatbotId }: { chatbotId: string }) 
       case "link":
         return <LinkIntegration />
       case "script":
-        return <ScriptIntegration />
+        return <ScriptIntegration chatbotId={chatbotId} />
       case "iframe":
         return <IframeIntegration />
       case "widget UID":

@@ -1,0 +1,58 @@
+/* Chat Widget Iframe Styles */
+/* This file ensures the chat widget works perfectly when embedded as an iframe */
+
+/* Reset any conflicting styles when in iframe */
+.chat-widget-iframe {
+  margin: 0 !important;
+  padding: 0 !important;
+  box-sizing: border-box !important;
+}
+
+/* Ensure full height usage in iframe */
+html, body {
+  height: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+}
+
+/* Override any fixed positioning when in iframe */
+.chat-widget-container.iframe-mode {
+  position: relative !important;
+  top: auto !important;
+  right: auto !important;
+  bottom: auto !important;
+  left: auto !important;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* Smooth animations for iframe environment */
+.chat-slide-up {
+  animation: none !important;
+}
+
+/* Mobile responsiveness in iframe */
+@media (max-width: 768px) {
+  .chat-window-mobile {
+    width: 100% !important;
+    height: 100% !important;
+    border-radius: 0 !important;
+  }
+}
+
+/* Hide scrollbars in iframe to prevent double scrolling */
+.chat-widget-container iframe {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.chat-widget-container iframe::-webkit-scrollbar {
+  display: none;
+}
+
+/* Ensure proper text rendering in iframe */
+.chat-widget * {
+  -webkit-font-smoothing: antialiased !important;
+  -moz-osx-font-smoothing: grayscale !important;
+} 

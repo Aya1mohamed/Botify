@@ -74,12 +74,7 @@ export async function getChatMessages(sessionId: string): Promise<{
     const messages = await customFetch<GetMessagesResponse>({
       endpoint: `/chat-sessions/${sessionId}/messages/`,
       requiresAuth: true,
-      method: 'GET',
-      options: {
-        next: {
-          revalidate: 500,
-        },
-      },
+      method: 'GET'
     });
 
     // Sort messages by timestamp
@@ -95,6 +90,47 @@ export async function getChatMessages(sessionId: string): Promise<{
     return {
       success: false,
       error: error instanceof Error ? error.message : 'Failed to fetch chat messages',
+    };
+  }
+}
+
+/**
+ * Sends a dashboard user message to a specific chat session
+ * @param sessionId The ID of the chat session
+ * @param message The message content to send
+ * @returns Result object with success status and error message if applicable
+ */
+export async function sendDashboardUserMessage(sessionId: string, message: string): Promise<{
+  success: boolean;
+  error?: string;
+}> {
+  try {
+    await customFetch({
+      endpoint: `/chat-sessions/${sessionId}/dashboard-user-message/`,
+      body: { message },
+      method: 'POST',
+      requiresAuth: true,
+    });
+
+    return {
+      success: true,
+    };
+  } catch (error) {
+    // Handle the specific case of empty JSON response
+    const errorMessage = error instanceof Error ? error.message : 'Failed to send message';
+    
+    // If the error is about JSON parsing but we got here, it might mean the request was successful
+    // but the response was empty (which is expected for this endpoint)
+    if (errorMessage.includes('Unexpected end of JSON input')) {
+      // The request was likely successful, just no JSON to parse
+      return {
+        success: true,
+      };
+    }
+    
+    return {
+      success: false,
+      error: errorMessage,
     };
   }
 } 

@@ -22,10 +22,22 @@ const sourceIcons = {
   text: AlignLeft,
 };
 
-export default function CreateChatbot3() {
+interface CreateChatbot3Props {
+  name?: string;
+  primaryColor?: string;
+  textColor?: string;
+  welcomeMessage?: string;
+  welcomePopup?: string;
+  chatPlaceholder?: string;
+  logo?: File | null;
+}
+
+export default function CreateChatbot3(props?: CreateChatbot3Props) {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const botName = searchParams.get("name") || "";
+  
+  // Use props if provided, otherwise fall back to URL params (for backward compatibility)
+  const botName = props?.name || searchParams.get("name") || "";
 
   const [selectedSource, setSelectedSource] = useState<SourceType>("website");
   const [trainingData, setTrainingData] = useState<string | string[] | File[] | null>(null);
@@ -44,6 +56,25 @@ export default function CreateChatbot3() {
 
     const formData = new FormData();
     formData.append("name", botName);
+    
+    if (props?.primaryColor) {
+      formData.append("primary_color", props.primaryColor);
+    }
+    if (props?.textColor) {
+      formData.append("text_color", props.textColor);
+    }
+    if (props?.welcomeMessage) {
+      formData.append("welcome_message", props.welcomeMessage);
+    }
+    if (props?.welcomePopup) {
+      formData.append("welcome_popup", props.welcomePopup);
+    }
+    if (props?.chatPlaceholder) {
+      formData.append("chat_input", props.chatPlaceholder);
+    }
+    if (props?.logo) {
+      formData.append("logo", props.logo);
+    }
     
     if (Array.isArray(trainingData)) {
       trainingData.forEach(doc => formData.append("documents", doc));

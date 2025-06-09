@@ -18,19 +18,22 @@ import { Switch } from "@/components/ui/switch"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea";
 import ChatbotPreview from "@/components/ChatbotPreview/ChatbotPreview"
+import CreateChatbot3 from "../CreateChatbot3/page"
 export default function CreateChatbot2() {
     const router = useRouter()
     const [selectedLayout, setSelectedLayout] = useState<"chat">("chat");
     const [logo, setLogo] = useState<string | null>(null);
+    const [logoFile, setLogoFile] = useState<File | null>(null);
     const [streaming, setStreaming] = useState(false)
     const [primaryColor, setPrimaryColor] = useState("#634464")
     const [textColor, setTextColor] = useState("#ffffff")
-    const [welcomeMessage, setWelcomeMessage] = useState("👋 Hi There!\nHow can I assist you today");
+    const [welcomePopup, setWelcomePopup] = useState("👋 Hi There!\nHow can I assist you today");
     const [chatPlaceholder, setChatPlaceholder] = useState("Ask your query...");
     const [canSendAttachment, setCanSendAttachment] = useState(false);
     const [botName, setBotName] = useState("");
     const [chatBgColor, setChatBgColor] = useState("#ffffff")
     const [messages, setMessages] = useState<string[]>(["👋 Hi There!\nHow can I assist you today"]);
+    const [showStep3, setShowStep3] = useState(false);
 
     const goToStep3 = () => {
         if (!botName.trim()) {
@@ -38,8 +41,8 @@ export default function CreateChatbot2() {
             return
         }
 
-        // Pass name to CreateChatbot3 via query param
-        router.push(`/CreateChatbot3?name=${encodeURIComponent(botName)}`)
+        // Show CreateChatbot3 component instead of navigating
+        setShowStep3(true);
     }
 
     const handleAddMessage = () => {
@@ -63,6 +66,7 @@ export default function CreateChatbot2() {
         if (file) {
             const imageUrl = URL.createObjectURL(file);
             setLogo(imageUrl);
+            setLogoFile(file);
         }
     };
     const layouts: { id: "chat"; icon: React.ComponentType<{ className?: string }>; title: string; description: string }[] = [
@@ -82,12 +86,27 @@ export default function CreateChatbot2() {
         setPrimaryColor("#634464")
         setTextColor(selectedLayout === "chat" ? "#ffffff" : "#000000")
         setChatBgColor("#ffffff")
-        setWelcomeMessage("👋 Hi There!\nHow can I assist you today")
+        setWelcomePopup("👋 Hi There!\nHow can I assist you today")
         setChatPlaceholder("Ask your query...")
         setCanSendAttachment(false)
         setMessages([])
     }
 
+
+    // If we're on step 3, render CreateChatbot3 component
+    if (showStep3) {
+        return (
+            <CreateChatbot3 
+                name={botName}
+                primaryColor={primaryColor}
+                textColor={textColor}
+                welcomeMessage={messages[0] || "👋 Hi There!\nHow can I assist you today"}
+                welcomePopup={welcomePopup}
+                chatPlaceholder={chatPlaceholder}
+                logo={logoFile}
+            />
+        );
+    }
 
     return (
         <div className="min-h-screen bg-white dark:bg-gray-900">
@@ -343,10 +362,10 @@ export default function CreateChatbot2() {
                                 <AccordionContent className="px-4 py-3 space-y-3 text-sm text-gray-600">
                                     <h4 className="text-sm font-medium text-gray-800">English</h4>
 
-                                    <Textarea
-                                        value={welcomeMessage}
-                                        onChange={(e) => setWelcomeMessage(e.target.value)}
-                                        rows={2}
+                                                        <Textarea
+                        value={welcomePopup}
+                        onChange={(e) => setWelcomePopup(e.target.value)}
+                        rows={2}
                                         className="w-full p-4 rounded-lg bg-gray-200 text-gray-800 resize-none focus:outline-none focus:ring-2 focus:ring-brand-primary text-sm"
                                     />
                                 </AccordionContent>
@@ -400,7 +419,7 @@ export default function CreateChatbot2() {
                     primaryColor={primaryColor}
                     textColor={textColor}
                     chatBgColor={chatBgColor}
-                    welcomeMessage={welcomeMessage}
+                    welcomeMessage={welcomePopup}
                     chatPlaceholder={chatPlaceholder}
                     canSendAttachment={canSendAttachment}
                     botName={botName}

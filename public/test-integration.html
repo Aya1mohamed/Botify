@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Widget Integration Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: white;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        .demo-content {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 40px;
+            border-radius: 20px;
+            margin: 20px 0;
+            backdrop-filter: blur(10px);
+        }
+        .control-panel {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+        }
+        button {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin: 5px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        button:hover {
+            background: #45a049;
+        }
+        .danger {
+            background: #f44336;
+        }
+        .danger:hover {
+            background: #da190b;
+        }
+        code {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: monospace;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🤖 Chat Widget Integration Test</h1>
+        
+        <div class="demo-content">
+            <h2>Welcome to the Chat Widget Demo</h2>
+            <p>This page demonstrates how to integrate the chat widget on any website.</p>
+        </div>
+
+        <div class="control-panel">
+            <h3>Widget Controls</h3>
+            <p>Test the programmatic API:</p>
+            
+            <button onclick="ChatWidget.show()">Show Widget</button>
+            <button onclick="ChatWidget.hide()">Hide Widget</button>
+            <button onclick="ChatWidget.toggle()">Toggle Widget</button>
+            <button onclick="ChatWidget.reload()" class="danger">Reload Widget</button>
+        </div>
+
+        <div class="demo-content">
+            <h3>Integration Code</h3>
+            <p>Add this to your website:</p>
+            <div style="background: rgba(0,0,0,0.5); padding: 20px; border-radius: 10px; text-align: left;">
+                <code style="color: #61dafb;">
+&lt;script&gt;<br>
+&nbsp;&nbsp;window.ChatWidgetConfig = {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;chatbotId: '5b90f271-31ac-4840-bcb9-321cb6185660',<br>
+&nbsp;&nbsp;&nbsp;&nbsp;baseUrl: 'http://127.0.0.1:3002'<br>
+&nbsp;&nbsp;};<br>
+&lt;/script&gt;<br>
+&lt;script src="http://127.0.0.1:3002/chat-widget.js"&gt;&lt;/script&gt;
+                </code>
+            </div>
+        </div>
+    </div>
+
+    <!-- Widget Configuration -->
+    <script>
+        // Get chatbot ID from URL parameter or use default
+        const urlParams = new URLSearchParams(window.location.search);
+        const chatbotId = urlParams.get('chatbot_id') || 'demo-chatbot-id';
+        
+        window.ChatWidgetConfig = {
+            chatbotId: chatbotId,
+            baseUrl: window.location.origin
+        };
+    </script>
+    <script src="/chat-widget.js"></script>
+
+    <script>
+        // Add some demo interactions
+        setTimeout(() => {
+            console.log('Chat widget loaded! Try the controls above.');
+        }, 1000);
+    </script>
+</body>
+</html> 
