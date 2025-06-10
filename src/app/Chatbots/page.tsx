@@ -31,7 +31,7 @@ export default function ChatbotsPage() {
     const router = useRouter();
 
     const handleChatbotClick = (chatbotId: string) => {
-        router.push(`/Botify/${chatbotId}`);
+        router.push(`/Chats/${chatbotId}`);
     };
 
     const handleAddChatbot = () => {

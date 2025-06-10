@@ -93,7 +93,7 @@ export default function CreateChatbot3(props?: CreateChatbot3Props) {
     const success = await createChatbot(formData);
     if (success) {
       toast.success("Chatbot created successfully!");
-      router.push("/Botify");
+      router.push("/Chats");
     } else {
       toast.error(error || "Failed to create chatbot.");
     }
@@ -125,7 +125,7 @@ export default function CreateChatbot3(props?: CreateChatbot3Props) {
             <h2 className="text-lg font-semibold text-gray-800">Train your chatbot</h2>
           </div>
           <button
-            onClick={() => router.push("/Botify")}
+            onClick={() => router.push("/Chats")}
             className="text-sm text-gray-600 bg-gray-100 p-2 rounded-md hover:text-black flex items-center gap-1 transition"
           >
             Skip for now
