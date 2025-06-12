@@ -1,6 +1,5 @@
 'use server';
 import { revalidateTag } from 'next/cache';
-import { customFetch } from '@/services/api';
 import { getAccessToken } from '@/actions/tokenManager';
 
 /**

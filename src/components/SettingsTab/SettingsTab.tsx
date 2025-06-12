@@ -42,6 +42,7 @@ export default function SettingsTab({ chatbotId, chatbotName }: SettingsTabProps
                 toast.error(error || "Failed to delete chatbot. Please try again.");
             }
         } catch (err) {
+            console.error("Error deleting chatbot:", err);
             toast.error("An unexpected error occurred. Please try again.");
         }
     };

@@ -18,7 +18,7 @@ import { Switch } from "@/components/ui/switch"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea";
 import ChatbotPreview from "@/components/ChatbotPreview/ChatbotPreview"
-import CreateChatbot3 from "../CreateChatbot3/page"
+import CreateChatbot3Component from "@/components/CreateChatbot3/CreateChatbot3Component"
 export default function CreateChatbot2() {
     const router = useRouter()
     const [selectedLayout, setSelectedLayout] = useState<"chat">("chat");
@@ -96,7 +96,7 @@ export default function CreateChatbot2() {
     // If we're on step 3, render CreateChatbot3 component
     if (showStep3) {
         return (
-            <CreateChatbot3 
+            <CreateChatbot3Component 
                 name={botName}
                 primaryColor={primaryColor}
                 textColor={textColor}
