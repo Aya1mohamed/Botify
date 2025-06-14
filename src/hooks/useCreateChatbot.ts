@@ -2,12 +2,22 @@
 
 import { useState } from "react";
 import { customFetch } from '@/services/api';
-import { CreateChatbotResponse } from '@/services/types/createChatbot';
 
 type UseCreateChatbotResult = {
   error: string | null;
   loading: boolean;
   createChatbot: (formData: FormData) => Promise<boolean | null>;
+};
+
+type CreateChatbotResponse = {
+  id: string;
+  name: string;
+  primary_color: string;
+  text_color: string;
+  welcome_message: string;
+  welcome_popup: string;
+  chat_input: string;
+  logo: string;
 };
 
 export const useCreateChatbot = (): UseCreateChatbotResult => {
@@ -28,10 +38,10 @@ export const useCreateChatbot = (): UseCreateChatbotResult => {
         addContentType: false,
       });
 
-      if (result.success) {
+      if (result.id) {
         return true;
       } else {
-        setError(result.error || "Failed to create chatbot");
+        setError("Failed to create chatbot");
         return false;
       }
     } catch (err) {
