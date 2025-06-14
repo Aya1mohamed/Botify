@@ -1,5 +1,8 @@
+'use client';
+
 import { useState } from "react";
-import { createChatbot } from "@/actions/createChatbot";
+import { customFetch } from '@/services/api';
+import { CreateChatbotResponse } from '@/services/types/createChatbot';
 
 type UseCreateChatbotResult = {
   error: string | null;
@@ -16,9 +19,16 @@ export const useCreateChatbot = (): UseCreateChatbotResult => {
     setError(null);
 
     try {
-      const result = await createChatbot(formData);
+      const result = await customFetch<CreateChatbotResponse>({
+        endpoint: '/chatbots/',
+        body: formData,
+        method: 'POST',
+        requiresAuth: true,
+        shouldStringify: false,
+        addContentType: false,
+      });
+
       if (result.success) {
-        console.log(result);
         return true;
       } else {
         setError(result.error || "Failed to create chatbot");
