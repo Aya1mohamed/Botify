@@ -2,7 +2,7 @@ import React from 'react';
 import { Copy } from "lucide-react";
 
 const WidgetUIDIntegration = ({ chatbotId }: { chatbotId: string }) => {
-  const widgetUID = `https://botify-fe.vercel.app/Chat?chatbot_id=${chatbotId}`;
+  const widgetUID = `${window.location.origin}/Chat?chatbot_id=${chatbotId}`;
 
   const handleCopy = () => {
     navigator.clipboard.writeText(widgetUID);

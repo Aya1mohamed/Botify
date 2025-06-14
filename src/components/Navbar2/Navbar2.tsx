@@ -12,12 +12,13 @@ import { Bell } from "lucide-react"
 import { MdAccountCircle } from "react-icons/md"
 import { useRouter } from "next/navigation"
 import { toast } from "sonner"
+import { deleteTokens } from '@/actions/tokenManager'
 
 export default function Navbar2() {
       const router = useRouter()
     
       const handleLogout = () => {
-        localStorage.removeItem("botify_token")
+        deleteTokens()
         toast.success("Logged out successfully")
         setTimeout(() => {
           router.push("/")

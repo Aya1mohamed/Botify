@@ -25,10 +25,16 @@ import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { useChatbots } from "@/hooks/useChatbots"
 import { useRouter } from "next/navigation"
+import { deleteTokens } from "@/actions/tokenManager"
 
 export default function ChatbotsPage() {
     const { chatbots, loading, error } = useChatbots();
     const router = useRouter();
+
+    const handleLogout = () => {
+        deleteTokens();
+        router.push('/');
+    }
 
     const handleChatbotClick = (chatbotId: string) => {
         router.push(`/Chats/${chatbotId}`);
@@ -68,7 +74,7 @@ export default function ChatbotsPage() {
                                     Profile
                                 </DropdownMenuItem>
                                 <DropdownMenuItem className="text-red-600">
-                                    <LogOut className="w-4 h-4 mr-2" />
+                                    <LogOut className="w-4 h-4 mr-2" onClick={handleLogout}/>
                                     Logout
                                 </DropdownMenuItem>
                             </DropdownMenuContent>
@@ -171,7 +177,7 @@ export default function ChatbotsPage() {
                                 <User className="w-4 h-4 mr-2" />
                                 Profile
                             </DropdownMenuItem>
-                            <DropdownMenuItem className="text-red-600">
+                            <DropdownMenuItem className="text-red-600" onClick={handleLogout}>
                                 <LogOut className="w-4 h-4 mr-2" />
                                 Logout
                             </DropdownMenuItem>
