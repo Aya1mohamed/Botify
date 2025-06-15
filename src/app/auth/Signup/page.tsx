@@ -18,6 +18,7 @@ import { Controller } from "react-hook-form";
 import PhoneInput from 'react-phone-input-2'
 import 'react-phone-input-2/lib/style.css'
 import { useSanitizedForm } from "@/hooks/useSanitizedForm"
+import Image from "next/image"
 
 export default function Page() {
   const router = useRouter()
@@ -79,7 +80,7 @@ export default function Page() {
         <Card className="w-full max-w-md shadow-md rounded-2xl p-3">
           <CardHeader>
             <div className="flex flex-col items-center gap-2">
-              <img src="/home/logoo.png" alt="logo" className="w-30 h-20" />
+              <Image src="/home/logoo.png" alt="logo" className="w-30 h-20" />
               <CardTitle className="text-2xl font-bold">Create your account</CardTitle>
               <p className="text-sm text-gray-500 text-center">Sign up to continue using Botify</p>
             </div>
@@ -239,7 +240,7 @@ export default function Page() {
       </div>
 
       <div className="hidden md:flex w-1/2 relative">
-        <img
+        <Image
           src="/home/loginrobot.jpg"
           alt="AI illustration"
           className="object-cover object-center w-full h-full"

@@ -13,6 +13,7 @@ import Account from "@/components/Account/Account"
 import AllApps from "@/components/AllApps/AllApps"
 import { toast } from "sonner"
 import { useAuth } from "@/components/AuthProvider/AuthProvider"
+import Image from "next/image"
 
 export default function Page() {
   const searchParams = useSearchParams()
@@ -36,7 +37,7 @@ export default function Page() {
       {/* Navbar */}
       <div className='fixed top-0 w-full bg-white dark:bg-transparent backdrop-blur z-50 flex justify-between items-center px-4 md:px-16 py-2 border-b '>
         <div className='w-24 cursor-pointer'>
-          <img src="/home/logoo.png" onClick={() => router.push('/')}
+          <Image src="/home/logoo.png" onClick={() => router.push('/')}
             alt="Logo" />
         </div>
         <Popover>

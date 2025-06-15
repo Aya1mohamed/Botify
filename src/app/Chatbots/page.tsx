@@ -49,7 +49,7 @@ export default function ChatbotsPage() {
             <div className="">
                 <div className='fixed top-0 w-full bg-white dark:bg-transparent backdrop-blur z-50 flex justify-between items-center px-16 py-2 border-b '>
                     <div className='w-24'>
-                        <img src="/home/logoo.png" alt="Logo" />
+                        <Image src="/home/logoo.png" alt="Logo" />
                     </div>
 
                     <div className=" flex gap-3 items-center text-center">
@@ -97,7 +97,7 @@ export default function ChatbotsPage() {
             <div className="">
                 <div className='fixed top-0 w-full bg-white dark:bg-transparent backdrop-blur z-50 flex justify-between items-center px-16 py-2 border-b '>
                     <div className='w-24'>
-                        <img src="/home/logoo.png" alt="Logo" />
+                        <Image src="/home/logoo.png" alt="Logo" />
                     </div>
 
                     <div className=" flex gap-3 items-center text-center">
@@ -122,7 +122,7 @@ export default function ChatbotsPage() {
                                     Profile
                                 </DropdownMenuItem>
                                 <DropdownMenuItem className="text-red-600">
-                                    <LogOut className="w-4 h-4 mr-2" />
+                                    <LogOut className="w-4 h-4 mr-2" onClick={handleLogout}/>
                                     Logout
                                 </DropdownMenuItem>
                             </DropdownMenuContent>
@@ -151,7 +151,7 @@ export default function ChatbotsPage() {
         <div className="">
             <div className='fixed top-0 w-full bg-white dark:bg-transparent backdrop-blur z-50 flex justify-between items-center px-16 py-2 border-b '>
                 <div className='w-24 cursor-pointer'>
-                    <img src="/home/logoo.png" alt="Logo" onClick={() => router.push('/Dashboard')} />
+                    <Image src="/home/logoo.png" alt="Logo" onClick={() => router.push('/Dashboard')} />
                 </div>
 
                 <div className=" flex gap-3 items-center text-center">

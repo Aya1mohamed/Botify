@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { useKeenSlider } from 'keen-slider/react';
+import Image from 'next/image';
 
 const logos = [
   '/logos/civicinnovation-dark.webp',
@@ -45,7 +46,7 @@ export default function LogoSlider() {
             key={index}
             className="keen-slider__slide flex items-center justify-center bg-gray-50 dark:bg-gray-800 p-4 rounded-xl shadow-md"
           >
-            <img src={logo} alt={`logo-${index}`} className="lg:h-14 object-contain" />
+            <Image src={logo} alt={`logo-${index}`} className="lg:h-14 object-contain" />
           </div>
         ))}
       </div>

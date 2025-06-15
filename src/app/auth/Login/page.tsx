@@ -68,7 +68,14 @@ export default function Page() {
         <Card className="shadow-md rounded-2xl w-full max-w-md space-y-3 p-4">
           <CardHeader>
             <div className="flex flex-col items-start gap-2 pt-10">
-              <Image src="/logoo.png" alt="logo" width={60} height={60}/>
+              <Image 
+                src="/home/logoo.png" 
+                alt="logo" 
+                width={60} 
+                height={60}
+                priority
+                unoptimized
+              />
               <CardTitle className="text-2xl font-bold">Welcome Back</CardTitle>
               <p className="text-sm text-gray-500">Sign in to continue using Botify</p>
             </div>
@@ -145,7 +152,7 @@ export default function Page() {
       </div>
 
       <div className="hidden md:flex w-1/2 relative">
-        <img src="/home/loginrobot.jpg" alt="AI illustration" className="object-cover object-center w-full h-full" />
+        <Image src="/home/loginrobot.jpg" alt="AI illustration" className="object-cover object-center w-full h-full" />
         
         <div className="absolute bottom-0 bg-gray-400 bg-opacity-60 text-white p-14 rounded-t-2xl w-full text-center">
           <p className="text-2xl font-semibold leading-snug">

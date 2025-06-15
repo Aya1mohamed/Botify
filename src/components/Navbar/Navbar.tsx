@@ -15,6 +15,7 @@ import { Sheet, SheetTrigger, SheetContent, SheetHeader, SheetTitle, } from "@/c
 import Link from 'next/link';
 import { Moon, Sun, Menu } from "lucide-react";
 import { useTheme } from "next-themes"
+import Image from 'next/image';
 
 export default function Navbar() {
   const { theme, setTheme } = useTheme()
@@ -28,7 +29,7 @@ export default function Navbar() {
     <div className='flex fixed top-0 w-full bg-transparent backdrop-blur z-50 md:justify-evenly justify-between items-center px-4 py-2 border'>
       {/* Logo */}
       <div className='w-24'>
-        <img src="/home/logoo.png" alt="Logo" />
+        <Image src="/home/logoo.png" alt="Logo" />
       </div>
 
       {/* Desktop Navigation */}

@@ -7,6 +7,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Send, MessageCircle, X } from "lucide-react";
 import { useGenerateResponse } from "@/hooks/useGenerateResponse";
 import { usePublicChatbot } from "@/hooks/usePublicChatbot";
+import Image from "next/image";
 
 interface Message {
   id: string;
@@ -23,6 +24,7 @@ export default function ChatPage() {
   const [isOpen, setIsOpen] = useState(false);
   const [isWelcomeShown, setIsWelcomeShown] = useState(false);
   const [isInIframe, setIsInIframe] = useState(false);
+  const [isClient, setIsClient] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -33,8 +35,15 @@ export default function ChatPage() {
   
   const { chatbot, loading: chatbotLoading, error: chatbotError } = usePublicChatbot(chatbotId);
 
+  // Set isClient to true after mount to prevent hydration mismatch
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
   // Detect if we're in an iframe
   useEffect(() => {
+    if (!isClient) return;
+    
     const inIframe = window.self !== window.top;
     setIsInIframe(inIframe);
     
@@ -51,7 +60,7 @@ export default function ChatPage() {
       // Add iframe class to body
       document.body.classList.add('chat-widget-iframe');
     }
-  }, []);
+  }, [isClient]);
 
   useEffect(() => {
     scrollToBottom();
@@ -202,6 +211,11 @@ export default function ChatPage() {
     );
   }
 
+  // Only render the chat widget after client-side hydration
+  if (!isClient) {
+    return null;
+  }
+
   return (
     <div className={`chat-widget ${isInIframe ? 'w-full h-full fixed inset-0' : 'fixed bottom-4 right-4'} z-50 chat-widget-container`}>
       {/* Chat Toggle Button */}
@@ -216,7 +230,7 @@ export default function ChatPage() {
             }}
           >
             {chatbot.logo ? (
-              <img 
+              <Image 
                 src={chatbot.logo} 
                 alt={chatbot.name}
                 className="w-8 h-8 rounded-full object-cover"
@@ -244,7 +258,7 @@ export default function ChatPage() {
 
       {/* Chat Window */}
       {isOpen && (
-        <div className={`bg-white ${isInIframe ? 'w-full h-full rounded-none' : 'rounded-lg w-80 h-96 sm:w-80 sm:h-96 max-sm:chat-window-mobile'} shadow-2xl border flex flex-col chat-slide-up`}>
+        <div className={`bg-white ${isInIframe ? 'w-full h-full rounded-none' : 'rounded-lg w-96 h-[32rem] sm:w-96 sm:h-[32rem] max-sm:chat-window-mobile'} shadow-2xl border flex flex-col chat-slide-up`}>
           {/* Header */}
           <div 
             className="flex items-center justify-between p-4 rounded-t-lg"
@@ -255,7 +269,7 @@ export default function ChatPage() {
           >
             <div className="flex items-center gap-2">
               {chatbot.logo ? (
-                <img 
+                <Image 
                   src={chatbot.logo} 
                   alt={chatbot.name}
                   className="w-8 h-8 rounded-full object-cover"
@@ -286,8 +300,21 @@ export default function ChatPage() {
               messages.map((message) => (
                 <div
                   key={message.id}
-                  className={`flex ${message.sender === "user" ? "justify-end" : "justify-start"}`}
+                  className={`flex ${message.sender === "user" ? "justify-end" : "justify-start"} items-start gap-2`}
                 >
+                  {message.sender !== "user" && (
+                    <div className="flex-shrink-0 mt-3">
+                      {chatbot.logo ? (
+                        <Image 
+                          src={chatbot.logo} 
+                          alt={chatbot.name}
+                          className="w-6 h-6 rounded-full object-cover"
+                        />
+                      ) : (
+                        <MessageCircle className="h-6 w-6 text-gray-400" />
+                      )}
+                    </div>
+                  )}
                   <div 
                     className={`max-w-[85%] p-2 rounded-lg text-sm ${
                       message.sender === "user" 

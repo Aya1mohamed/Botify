@@ -29,7 +29,7 @@ export async function middleware(request: NextRequest) {
   }
 
   // Static files and API routes (other than auth APIs) should be allowed
-  if (pathname.includes('/_next') || pathname.includes('/public') || (pathname.startsWith('/api') && !pathname.startsWith('/api/auth'))) {
+  if (pathname.includes('/_next') || pathname.includes('/Chat') || pathname.includes('/public') || (pathname.startsWith('/api') && !pathname.startsWith('/api/auth'))) {
     return NextResponse.next();
   }
 

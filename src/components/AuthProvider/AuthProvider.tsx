@@ -78,7 +78,15 @@ export function AuthProvider({ children }: AuthProviderProps) {
         setUser(null);
 
         // Redirect to login if not on a public path
-        const publicPaths = ['/auth/Login', '/auth/Signup'];
+        const publicPaths = [
+          '/auth/Login', 
+          '/auth/Signup', 
+          '/Chat',
+          '/_next',
+          '/images',
+          '/public',
+          '/favicon.ico'
+        ];
         if (!publicPaths.some(path => pathname.startsWith(path))) {
           router.push(`/auth/Login?callbackUrl=${encodeURIComponent(pathname)}`);
         }

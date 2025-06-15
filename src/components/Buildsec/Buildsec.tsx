@@ -91,12 +91,12 @@ export default function Buildsec() {
                         <CardContent className="p-6 space-y-4">
                             <p className="font-semibold text-lg text-center">AI Models</p>
                             <div className="grid grid-cols-3 gap-6 items-center justify-items-center">
-                                <img src="/logos/deepseek.png" className="w-20 h-auto" alt="Deepseek" />
-                                <img src="/logos/openai.png" className="w-20 h-auto" alt="OpenAI" />
-                                <img src="/logos/googleai.png" className="w-20 h-auto" alt="Google AI" />
-                                <img src="/logos/mistralai.png" className="w-20 h-auto" alt="Mistral AI" />
-                                <img src="/logos/cohere.png" className="w-20 h-auto" alt="Cohere" />
-                                <img src="/logos/anthropic.png" className="w-20 h-auto" alt="Anthropic" />
+                                <Image src="/logos/deepseek.png" className="w-20 h-auto" alt="Deepseek" />
+                                <Image src="/logos/openai.png" className="w-20 h-auto" alt="OpenAI" />
+                                <Image src="/logos/googleai.png" className="w-20 h-auto" alt="Google AI" />
+                                <Image src="/logos/mistralai.png" className="w-20 h-auto" alt="Mistral AI" />
+                                <Image src="/logos/cohere.png" className="w-20 h-auto" alt="Cohere" />
+                                <Image src="/logos/anthropic.png" className="w-20 h-auto" alt="Anthropic" />
 
                             </div>
                             <div className='flex flex-wrap items-center space-x-3 '>
@@ -141,7 +141,7 @@ export default function Buildsec() {
                     {/* User message on the right */}
                     <div className="flex justify-start">
                         <div className="bg-white text-black flex flex-grow items-center space-x-2 rounded-xl shadow p-4 max-w-[70%]">
-                            <img src='/home/girl.svg' className='w-7 h-7'></img>
+                            <Image src='/home/girl.svg' className='w-7 h-7' alt="girl" />
                             <p>Can I check my lab test results?</p>
                         </div>
                     </div>
@@ -156,7 +156,7 @@ export default function Buildsec() {
                                 </div>
                             </div>
                             <div className="flex flex-row items-center gap-2 p-2 bg-white rounded-2xl">
-                                <img src="/home/Chatbot.svg" className=' w-8 h-8' alt="" />
+                                <Image src="/home/Chatbot.svg" className=' w-8 h-8' alt="" />
                                 <p className="text-sm text-gray-700">
                                     Sure! Please log in to your account and navigate to “Health Records” under the dashboard.
                                 </p>
