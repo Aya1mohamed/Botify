@@ -46,7 +46,7 @@ export default function LogoSlider() {
             key={index}
             className="keen-slider__slide flex items-center justify-center bg-gray-50 dark:bg-gray-800 p-4 rounded-xl shadow-md"
           >
-            <Image src={logo} alt={`logo-${index}`} className="lg:h-14 object-contain" />
+            <Image src={logo} alt={`logo-${index}`} className="lg:h-14 object-contain" width={100} height={100} />
           </div>
         ))}
       </div>

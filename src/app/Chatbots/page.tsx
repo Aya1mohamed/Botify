@@ -49,7 +49,7 @@ export default function ChatbotsPage() {
             <div className="">
                 <div className='fixed top-0 w-full bg-white dark:bg-transparent backdrop-blur z-50 flex justify-between items-center px-16 py-2 border-b '>
                     <div className='w-24'>
-                        <Image src="/home/logoo.png" alt="Logo" />
+                        <Image src="/home/logoo.png" alt="Logo" width={100} height={100} />
                     </div>
 
                     <div className=" flex gap-3 items-center text-center">
@@ -97,7 +97,7 @@ export default function ChatbotsPage() {
             <div className="">
                 <div className='fixed top-0 w-full bg-white dark:bg-transparent backdrop-blur z-50 flex justify-between items-center px-16 py-2 border-b '>
                     <div className='w-24'>
-                        <Image src="/home/logoo.png" alt="Logo" />
+                        <Image src="/home/logoo.png" alt="Logo" width={100} height={100} />
                     </div>
 
                     <div className=" flex gap-3 items-center text-center">
@@ -151,7 +151,7 @@ export default function ChatbotsPage() {
         <div className="">
             <div className='fixed top-0 w-full bg-white dark:bg-transparent backdrop-blur z-50 flex justify-between items-center px-16 py-2 border-b '>
                 <div className='w-24 cursor-pointer'>
-                    <Image src="/home/logoo.png" alt="Logo" onClick={() => router.push('/Dashboard')} />
+                    <Image src="/home/logoo.png" alt="Logo" width={100} height={100} onClick={() => router.push('/Dashboard')} />
                 </div>
 
                 <div className=" flex gap-3 items-center text-center">

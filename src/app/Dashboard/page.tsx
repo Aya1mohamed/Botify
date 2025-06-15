@@ -37,7 +37,7 @@ export default function Page() {
       {/* Navbar */}
       <div className='fixed top-0 w-full bg-white dark:bg-transparent backdrop-blur z-50 flex justify-between items-center px-4 md:px-16 py-2 border-b '>
         <div className='w-24 cursor-pointer'>
-          <Image src="/home/logoo.png" onClick={() => router.push('/')}
+          <Image src="/home/logoo.png" width={100} height={100} onClick={() => router.push('/')}
             alt="Logo" />
         </div>
         <Popover>

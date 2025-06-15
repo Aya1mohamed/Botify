@@ -71,10 +71,10 @@ export default function Page() {
               <Image 
                 src="/home/logoo.png" 
                 alt="logo" 
-                width={60} 
+                width={80} 
                 height={60}
                 priority
-                unoptimized
+                className="object-contain"
               />
               <CardTitle className="text-2xl font-bold">Welcome Back</CardTitle>
               <p className="text-sm text-gray-500">Sign in to continue using Botify</p>
@@ -151,8 +151,15 @@ export default function Page() {
         </Card>
       </div>
 
-      <div className="hidden md:flex w-1/2 relative">
-        <Image src="/home/loginrobot.jpg" alt="AI illustration" className="object-cover object-center w-full h-full" />
+      <div className="hidden md:flex w-1/2 relative h-screen">
+        <Image 
+          src="/home/loginrobot.jpg" 
+          alt="AI illustration" 
+          fill
+          priority
+          quality={100}
+          className="object-cover object-center"
+        />
         
         <div className="absolute bottom-0 bg-gray-400 bg-opacity-60 text-white p-14 rounded-t-2xl w-full text-center">
           <p className="text-2xl font-semibold leading-snug">

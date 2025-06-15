@@ -46,7 +46,7 @@ export default function HomePage() {
             alt="Robot head"
             width={220}
             height={220}
-            className="spin-y absolute z-20 top-[230px] right-[130px] translate-y-[-50%]"
+            className="spin-y absolute z-20 top-[300px] right-[130px] translate-y-[-50%]"
           />
 
         </div>

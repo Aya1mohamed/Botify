@@ -82,6 +82,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
           '/auth/Login', 
           '/auth/Signup', 
           '/Chat',
+          '/',
           '/_next',
           '/images',
           '/public',

@@ -29,7 +29,7 @@ export default function Navbar() {
     <div className='flex fixed top-0 w-full bg-transparent backdrop-blur z-50 md:justify-evenly justify-between items-center px-4 py-2 border'>
       {/* Logo */}
       <div className='w-24'>
-        <Image src="/home/logoo.png" alt="Logo" />
+        <Image src="/home/logoo.png" alt="Logo" width={100} height={100} />
       </div>
 
       {/* Desktop Navigation */}
