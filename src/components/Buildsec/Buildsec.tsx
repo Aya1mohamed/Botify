@@ -3,7 +3,7 @@ import React from 'react';
 import { Card, CardContent } from "@/components/ui/card";
 import Image from 'next/image';
 import {
-    Folder, Split,Link2, FileText, MessageSquareText, Webhook, Parentheses, Search, MoveRight
+    Folder, Split,Link2, FileText, MessageSquareText, Webhook, Parentheses, Search
 } from 'lucide-react';
 import { RiNotionFill, RiFileExcel2Fill } from "react-icons/ri";
 import { FaConfluence, FaGoogleDrive } from "react-icons/fa";
@@ -109,10 +109,6 @@ export default function Buildsec() {
                         </CardContent>
                     </Card>
                 </div>
-                {/* Arrow from left to middle */}
-                <div className="hidden md:block absolute left-96 translate-x-9 top-1/5 transform z-20">
-                    <MoveRight className="w-52 h-8 text-black" />
-                </div>
 
                 {/* Middle engine logo with glow */}
                 <div className="relative flex flex-col md:flex-row justify-center items-center p-10">
@@ -126,11 +122,6 @@ export default function Buildsec() {
                     <div className="bg-[#14141B] px-7 py-4 rounded-3xl shadow-xl z-10">
                         <Image src="/home/logoo.png" alt="botify" width={80} height={80} />
                     </div>
-                </div>
-
-                {/* Arrow from middle to right */}
-                <div className="hidden md:block absolute left-80 translate-x-96 top-1/5 transform z-20">
-                    <MoveRight className="w-8 h-8 text-black" />
                 </div>
 
 
